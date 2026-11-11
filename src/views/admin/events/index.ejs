@@ -1,0 +1,89 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <%- include('../../partials/alerts') %>
+
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Manajemen Agenda Kegiatan</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola jadwal acara, rapat, ujian, peringatan hari besar, dan agenda sekolah</p>
+      </div>
+      <a href="/admin/events/create" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs shadow transition">
+        <i class="fa-solid fa-plus text-gold-400"></i> Tambah Agenda
+      </a>
+    </div>
+
+    <!-- Table of events -->
+    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-4 px-6">Tanggal Mulai</th>
+              <th class="py-4 px-6">Nama Agenda / Kegiatan</th>
+              <th class="py-4 px-6">Waktu & Tempat</th>
+              <th class="py-4 px-6">Penyelenggara</th>
+              <th class="py-4 px-6">Status</th>
+              <th class="py-4 px-6 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <% if (events && events.length > 0) { %>
+              <% events.forEach(evt => { %>
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="py-4 px-6 font-bold text-navy-900">
+                    <span class="inline-flex items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-lg">
+                      <i class="fa-regular fa-calendar text-gold-500"></i> <%= formatShortDate(evt.start_date) %>
+                    </span>
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-bold text-navy-900 text-sm"><%= evt.title %></div>
+                    <div class="text-[11px] text-slate-500 mt-0.5 line-clamp-1"><%= evt.description %></div>
+                  </td>
+                  <td class="py-4 px-6 text-slate-600">
+                    <div><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i><%= evt.location %></div>
+                    <% if (evt.time_info) { %>
+                      <div class="text-[11px] text-gold-600 font-medium"><i class="fa-regular fa-clock mr-1"></i><%= evt.time_info %></div>
+                    <% } %>
+                  </td>
+                  <td class="py-4 px-6 text-slate-600 font-medium">
+                    <%= evt.organizer || 'Sekolah' %>
+                  </td>
+                  <td class="py-4 px-6">
+                    <% if (evt.is_active) { %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Aktif</span>
+                    <% } else { %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">Non-aktif</span>
+                    <% } %>
+                  </td>
+                  <td class="py-4 px-6 text-right space-x-1">
+                    <a href="/admin/events/<%= evt.id %>/edit" class="p-2 rounded-xl text-slate-400 hover:text-navy-900 hover:bg-slate-100 inline-block transition" title="Edit">
+                      <i class="fa-solid fa-pen-to-square text-xs"></i>
+                    </a>
+                    <form action="/admin/events/<%= evt.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Hapus agenda kegiatan ini?')">
+                      <button type="submit" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 inline-block transition" title="Hapus">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center py-12 text-slate-400 text-xs">
+                  Belum ada agenda kegiatan yang dicatat.
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('../../partials/admin-footer') %>

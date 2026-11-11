@@ -1,0 +1,110 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<!-- Header Banner -->
+<section class="bg-navy-950 text-white py-14 sm:py-20 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="max-w-3xl">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-gold-500/20 text-gold-300 border border-gold-400/40 mb-3">
+        <i class="fa-solid fa-cloud-arrow-down text-gold-400"></i> Repositori Dokumen
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Pusat Unduhan Dokumen</h1>
+      <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+        Unduh formulir administrasi, panduan tata tertib, kurikulum pembelajaran, dan kalender pendidikan resmi SMA Negeri 12 Denpasar.
+      </p>
+    </div>
+  </div>
+  <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+</section>
+
+<!-- Filter Kategori Dokumen -->
+<div class="bg-white border-b border-slate-200 sticky top-20 z-40 shadow-sm overflow-x-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center space-x-2 text-xs font-semibold">
+    <a href="/unduhan?kategori=all" class="px-4 py-2 rounded-xl whitespace-nowrap transition <%= activeCat === 'all' ? 'bg-navy-900 text-white shadow' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' %>">
+      Semua Dokumen (<%= downloads.length %>)
+    </a>
+    <% if (categories && categories.length > 0) { %>
+      <% categories.forEach(cat => { %>
+        <a href="/unduhan?kategori=<%= encodeURIComponent(cat) %>" class="px-4 py-2 rounded-xl whitespace-nowrap transition <%= activeCat === cat ? 'bg-navy-900 text-white shadow' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' %>">
+          <%= cat %>
+        </a>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+
+<main class="py-12 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+      
+      <!-- Table of downloads -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-4 px-6 w-12 text-center">No</th>
+              <th class="py-4 px-6">Nama Dokumen</th>
+              <th class="py-4 px-6">Kategori</th>
+              <th class="py-4 px-6">Format & Ukuran</th>
+              <th class="py-4 px-6 text-center">Diunduh</th>
+              <th class="py-4 px-6 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <% if (downloads && downloads.length > 0) { %>
+              <% downloads.forEach((doc, idx) => { %>
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="py-4 px-6 text-center font-bold text-slate-400">
+                    <%= idx + 1 %>
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                        <i class="fa-solid fa-file-pdf text-sm"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-navy-900 text-sm hover:text-gold-600 transition">
+                          <%= doc.title %>
+                        </div>
+                        <div class="text-[11px] text-slate-400">
+                          Dipublikasikan: <%= formatShortDate(doc.created_at) %>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-4 px-6">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-bold bg-navy-50 text-navy-800 border border-navy-100">
+                      <%= doc.category %>
+                    </span>
+                  </td>
+                  <td class="py-4 px-6 text-slate-600 font-medium">
+                    <span class="uppercase font-bold text-slate-800"><%= doc.file_type %></span> &bull; <%= doc.file_size || '-' %>
+                  </td>
+                  <td class="py-4 px-6 text-center text-slate-500 font-medium">
+                    <i class="fa-solid fa-download text-gold-500 mr-1"></i> <%= doc.download_count %> kali
+                  </td>
+                  <td class="py-4 px-6 text-right">
+                    <a href="/unduhan/<%= doc.id %>/file" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-navy-900 hover:bg-gold-500 hover:text-white text-white font-bold text-xs transition shadow-sm">
+                      <i class="fa-solid fa-download"></i> Unduh
+                    </a>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center py-12 text-slate-400">
+                  Tidak ada dokumen dalam kategori ini.
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,218 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<!-- Header Banner -->
+<section class="bg-navy-950 text-white py-14 sm:py-20 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-gold-500/20 text-gold-300 border border-gold-400/40">
+          <i class="fa-solid fa-user-plus text-gold-400"></i> Informasi Resmi
+        </span>
+        <% if (ppdb && ppdb.status === 'Buka') { %>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500 text-white shadow animate-pulse">
+            <i class="fa-solid fa-circle text-[8px]"></i> Pendaftaran Sedang Buka
+          </span>
+        <% } else { %>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500 text-white shadow">
+            Status: <%= ppdb ? ppdb.status : 'Segera Dibuka' %>
+          </span>
+        <% } %>
+      </div>
+      
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+        PPDB SMA Negeri 12 Denpasar Tahun Ajaran <%= ppdb ? ppdb.academic_year : '2026/2027' %>
+      </h1>
+      <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+        Penerimaan Peserta Didik Baru (PPDB) jenjang SMA Negeri Provinsi Bali berasaskan Objektif, Transparan, Akuntabel, dan Berkeadilan.
+      </p>
+
+      <div class="mt-6 flex flex-wrap gap-4">
+        <a href="<%= ppdb ? ppdb.registration_url : 'https://smabali.siap-ppdb.com' %>" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-sm shadow-lg hover:shadow-gold-500/30 transition transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <span>Daftar Melalui Portal SIAP PPDB Bali</span>
+        </a>
+        <a href="#alur" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 transition">
+          <i class="fa-solid fa-list-ol"></i>
+          <span>Pelajari Alur & Syarat</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+</section>
+
+<main class="py-12 bg-slate-50 space-y-16">
+
+  <!-- 1. JALUR PENERIMAAN (4 JALUR) -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <span class="text-xs font-bold text-gold-600 tracking-wider uppercase bg-gold-100 px-3 py-1 rounded-full">
+        Pilihan Jalur Masuk
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-navy-900 mt-2 tracking-tight">
+        4 Jalur Resmi Pendaftaran PPDB
+      </h2>
+      <p class="text-xs text-slate-500 mt-1">Sesuai dengan Petunjuk Teknis Disdikpora Provinsi Bali</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Jalur Zonasi -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between hover:border-gold-400 transition">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-navy-50 text-navy-900 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <span class="text-xs font-bold text-gold-600 uppercase">Kuota Utama</span>
+          <h3 class="font-bold text-navy-900 text-base mt-1 mb-2">Jalur Zonasi</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Diperuntukkan bagi calon peserta didik yang berdomisili di dalam wilayah zonasi yang telah ditetapkan oleh Pemerintah Provinsi Bali berdasarkan jarak tempat tinggal KK ke sekolah.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 font-semibold">
+          Kuota: Min. 50%
+        </div>
+      </div>
+
+      <!-- Jalur Afirmasi -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between hover:border-gold-400 transition">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </div>
+          <span class="text-xs font-bold text-gold-600 uppercase">Afirmasi & Inklusi</span>
+          <h3 class="font-bold text-navy-900 text-base mt-1 mb-2">Jalur Afirmasi</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Bagi calon peserta didik dari keluarga ekonomi tidak mampu (pemegang KIP, PKH, KPS) dan penyandang disabilitas yang memenuhi syarat akademis.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 font-semibold">
+          Kuota: Min. 15%
+        </div>
+      </div>
+
+      <!-- Jalur Prestasi -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between hover:border-gold-400 transition">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-navy-50 text-navy-900 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <span class="text-xs font-bold text-gold-600 uppercase">Akademik & Seni</span>
+          <h3 class="font-bold text-navy-900 text-base mt-1 mb-2">Jalur Prestasi</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Berdasarkan nilai akumulasi rapor, sertifikat kejuaraan sains, olahraga, serta sertifikat apresiasi seni budaya Bali / kearifan lokal berjenjang.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 font-semibold">
+          Kuota: Maks. 30%
+        </div>
+      </div>
+
+      <!-- Jalur Perpindahan Tugas -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between hover:border-gold-400 transition">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-briefcase"></i>
+          </div>
+          <span class="text-xs font-bold text-gold-600 uppercase">Mutasi Tugas</span>
+          <h3 class="font-bold text-navy-900 text-base mt-1 mb-2">Jalur Pindah Tugas</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Bagi calon peserta didik yang orang tua/walinya dipindahtugaskan oleh instansi pemerintah, BUMN, TNI/Polri, atau perusahaan berbadan hukum ke wilayah Denpasar.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 font-semibold">
+          Kuota: Maks. 5%
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 2. ALUR PENDAFTARAN & PERSYARATAN BERKAS -->
+  <section id="alur" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Alur Step-by-Step (7 Kolom) -->
+      <div class="lg:col-span-7 bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-slate-200/80">
+        <span class="text-xs font-bold text-gold-600 uppercase tracking-wider bg-gold-50 px-3 py-1 rounded-full">
+          Petunjuk Teknis
+        </span>
+        <h3 class="text-2xl font-extrabold text-navy-900 mt-2 mb-6 tracking-tight">
+          Alur Pendaftaran Online
+        </h3>
+
+        <div class="space-y-6">
+          <% const steps = (ppdb && ppdb.flow_steps) ? ppdb.flow_steps.split('\n').filter(s => s.trim().length > 0) : []; %>
+          <% steps.forEach((step, idx) => { %>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl bg-navy-900 text-gold-400 font-bold flex items-center justify-center flex-shrink-0 text-sm shadow">
+                <%= idx + 1 %>
+              </div>
+              <div class="space-y-1">
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                  <%= step %>
+                </p>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Persyaratan Berkas (5 Kolom) -->
+      <div class="lg:col-span-5 bg-navy-900 text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-navy-800 flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-bold text-gold-400 uppercase tracking-wider bg-gold-500/20 px-3 py-1 rounded-full border border-gold-400/30">
+            Kelengkapan Berkas
+          </span>
+          <h3 class="text-xl sm:text-2xl font-extrabold mt-2 mb-6 tracking-tight">
+            Dokumen yang Wajib Disiapkan
+          </h3>
+
+          <div class="space-y-3 text-xs text-slate-200">
+            <% const reqs = (ppdb && ppdb.requirements) ? ppdb.requirements.split('\n').filter(r => r.trim().length > 0) : []; %>
+            <% reqs.forEach(reqItem => { %>
+              <div class="flex items-start gap-3 p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <i class="fa-solid fa-circle-check text-gold-400 mt-0.5 flex-shrink-0"></i>
+                <span class="leading-relaxed"><%= reqItem.replace(/^[0-9]+\.\s*/, '') %></span>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-navy-800 text-xs text-slate-400">
+          * Seluruh dokumen discan dalam format PDF/JPG asli (bukan fotokopi hitam putih) dengan ukuran maksimal 1 MB per berkas.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. KONTAK HELPDESK & LAYANAN INFORMASI PPDB -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-2 text-center md:text-left">
+        <h4 class="text-lg font-bold text-navy-900 flex items-center justify-center md:justify-start gap-2">
+          <i class="fa-solid fa-headset text-gold-500"></i> Butuh Bantuan atau Informasi Lebih Lanjut?
+        </h4>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Tim Posko PPDB SMA Negeri 12 Denpasar siap melayani konsultasi pendaftaran online dan verifikasi berkas.
+        </p>
+        <p class="text-xs text-navy-900 font-bold">
+          <%= ppdb ? ppdb.contact_person : 'Humas PPDB: 0812-3899-1212 / (0361) 462912' %>
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://wa.me/<%= (school.whatsapp || '').replace(/[^0-9]/g, '') %>?text=Halo%20Admin%20PPDB%20SMA%20Negeri%2012%20Denpasar,%20saya%20ingin%20bertanya%20mengenai%20pendaftaran" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition">
+          <i class="fa-brands fa-whatsapp text-sm"></i> Chat Helpdesk WhatsApp
+        </a>
+        <a href="/unduhan" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition">
+          <i class="fa-solid fa-file-pdf"></i> Unduh Formulir
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<%- include('../partials/footer') %>

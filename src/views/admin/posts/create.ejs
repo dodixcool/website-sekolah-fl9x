@@ -1,0 +1,122 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <%- include('../../partials/alerts') %>
+
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Tulis Berita / Pengumuman Baru</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Isi formulir berikut secara lengkap untuk menerbitkan warta baru</p>
+      </div>
+      <a href="/admin/posts" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold hover:bg-slate-50 transition">
+        <i class="fa-solid fa-arrow-left"></i> Kembali
+      </a>
+    </div>
+
+    <form id="postForm" action="/admin/posts" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Kolom Editor Utama (8 Kolom) -->
+      <div class="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-5">
+        <div>
+          <label for="title" class="block font-bold text-xs text-slate-700 mb-1.5 uppercase tracking-wider">Judul Artikel <span class="text-rose-500">*</span></label>
+          <input type="text" id="title" name="title" required placeholder="Contoh: Siswa SMAN 12 Denpasar Juara 1 OSN Nasional..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 focus:bg-white transition text-xs font-semibold">
+        </div>
+
+        <div>
+          <label for="excerpt" class="block font-bold text-xs text-slate-700 mb-1.5 uppercase tracking-wider">Ringkasan Singkat (Excerpt)</label>
+          <textarea id="excerpt" name="excerpt" rows="2" placeholder="Ringkasan 1-2 kalimat pengantar artikel untuk pratinjau berita..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 focus:bg-white transition text-xs"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-xs text-slate-700 mb-1.5 uppercase tracking-wider">Konten / Isi Lengkap Berita <span class="text-rose-500">*</span></label>
+          <!-- Quill Editor Container -->
+          <div id="editor" class="bg-white min-h-[300px] rounded-b-xl text-sm"></div>
+          <input type="hidden" name="content" id="contentInput" required>
+        </div>
+      </div>
+
+      <!-- Kolom Metadata & Status (4 Kolom) -->
+      <div class="lg:col-span-4 space-y-6">
+        
+        <!-- Box Pengaturan Publikasi -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-5 text-xs">
+          <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-gear text-gold-500"></i> Pengaturan Publikasi
+          </h3>
+
+          <div>
+            <label for="category_id" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Kategori Berita</label>
+            <select id="category_id" name="category_id" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+              <% if (categories && categories.length > 0) { %>
+                <% categories.forEach(cat => { %>
+                  <option value="<%= cat.id %>"><%= cat.name %></option>
+                <% }) %>
+              <% } %>
+            </select>
+          </div>
+
+          <div>
+            <label for="status" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Status Tayang</label>
+            <select id="status" name="status" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+              <option value="published">Langsung Tayang (Published)</option>
+              <option value="draft">Simpan Sebagai Draf (Draft)</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <input type="checkbox" id="is_featured" name="is_featured" value="1" class="w-4 h-4 rounded text-gold-600 focus:ring-gold-500 border-slate-300">
+            <label for="is_featured" class="font-semibold text-slate-700">Jadikan Berita Utama (Featured)</label>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Foto Thumbnail / Sampul</label>
+            <input type="file" name="thumbnail" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-navy-50 file:text-navy-900 hover:file:bg-navy-100 cursor-pointer">
+            <p class="text-[10px] text-slate-400 mt-1">Format: JPG, PNG, WEBP. Maks 5MB.</p>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100">
+            <button type="submit" class="w-full py-3 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs uppercase tracking-wider shadow transition">
+              <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Terbitkan Berita
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </main>
+</div>
+
+<script>
+  // Inisialisasi Quill Editor
+  const quill = new Quill('#editor', {
+    theme: 'snow',
+    placeholder: 'Tuliskan isi berita di sini...',
+    modules: {
+      toolbar: [
+        [{ header: [2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['blockquote', 'link'],
+        ['clean']
+      ]
+    }
+  });
+
+  const form = document.getElementById('postForm');
+  form.addEventListener('submit', (e) => {
+    const content = quill.root.innerHTML;
+    if (quill.getText().trim().length === 0) {
+      alert('Isi konten berita tidak boleh kosong!');
+      e.preventDefault();
+      return;
+    }
+    document.getElementById('contentInput').value = content;
+  });
+</script>
+
+<%- include('../../partials/admin-footer') %>

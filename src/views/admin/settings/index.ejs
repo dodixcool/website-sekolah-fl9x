@@ -1,0 +1,300 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <%- include('../../partials/alerts') %>
+
+    <div>
+      <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Pengaturan Identitas & Profil Sekolah</h1>
+      <p class="text-xs text-slate-500 mt-0.5">Kelola identitas resmi, kontak, sambutan kepala sekolah, visi misi, statistik, dan PPDB</p>
+    </div>
+
+    <form action="/admin/settings" method="POST" enctype="multipart/form-data" class="space-y-8 text-xs">
+      
+      <!-- 0. Logo & Identitas Visual -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-image text-gold-500"></i> Logo Resmi Sekolah
+          </span>
+          <span class="text-[11px] text-slate-400 font-normal">Tampil di Navbar, Footer, Favicon & Dokumen</span>
+        </h3>
+
+        <div class="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <div class="w-24 h-24 rounded-2xl bg-white p-2 border-2 border-slate-200 flex items-center justify-center shadow-inner flex-shrink-0 relative group">
+            <img id="logoPreview" src="<%= settings.logo_url || '/images/logo-sekolah.png' %>" alt="Logo Sekolah" class="max-w-full max-h-full object-contain">
+          </div>
+          <div class="space-y-2 flex-grow text-center sm:text-left">
+            <label class="block font-bold text-slate-700 uppercase tracking-wider text-xs">Pilih File Logo Baru</label>
+            <input type="file" id="logoInput" name="logo" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-navy-900 file:text-gold-400 hover:file:bg-navy-800 cursor-pointer">
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Format yang didukung: <strong>PNG (Transparan disarankan)</strong>, <strong>JPG</strong>, <strong>WEBP</strong>. Rekomendasi rasio persegi (1:1), maks 5MB.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Identitas Sekolah -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-school text-gold-500"></i> Identitas Pokok Sekolah
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nama Resmi Sekolah</label>
+            <input type="text" name="school_name" value="<%= settings.school_name || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-semibold text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nama Singkatan / Alias</label>
+            <input type="text" name="school_alias" value="<%= settings.school_alias || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">NPSN</label>
+            <input type="text" name="school_npsn" value="<%= settings.school_npsn || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-mono text-xs">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Motto / Slogan Sekolah</label>
+            <input type="text" name="school_tagline" value="<%= settings.school_tagline || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Status Akreditasi</label>
+            <input type="text" name="accreditation" value="<%= settings.accreditation || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Kontak & Lokasi -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-address-book text-gold-500"></i> Kontak & Lokasi Kampus
+        </h3>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Alamat Lengkap</label>
+          <input type="text" name="address" value="<%= settings.address || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nomor Telepon Kantor</label>
+            <input type="text" name="phone" value="<%= settings.phone || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nomor WhatsApp Informasi</label>
+            <input type="text" name="whatsapp" value="<%= settings.whatsapp || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Email Resmi Sekolah</label>
+            <input type="email" name="email" value="<%= settings.email || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Embed URL Google Maps (src iframe)</label>
+          <input type="text" name="maps_embed" value="<%= settings.maps_embed || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+        </div>
+      </div>
+
+      <!-- 3. Media Sosial -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-share-nodes text-gold-500"></i> Akun Media Sosial Resmi
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Instagram URL</label>
+            <input type="url" name="instagram" value="<%= settings.instagram || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Facebook URL</label>
+            <input type="url" name="facebook" value="<%= settings.facebook || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">YouTube Channel URL</label>
+            <input type="url" name="youtube" value="<%= settings.youtube || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">TikTok URL</label>
+            <input type="url" name="tiktok" value="<%= settings.tiktok || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Pimpinan Sekolah & Sambutan -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-user-tie text-gold-500"></i> Pimpinan Sekolah & Sambutan
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nama Kepala Sekolah</label>
+            <input type="text" name="principal_name" value="<%= settings.principal_name || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-semibold text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">NIP Kepala Sekolah</label>
+            <input type="text" name="principal_nip" value="<%= settings.principal_nip || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-mono text-xs">
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <div class="w-20 h-24 rounded-2xl bg-white overflow-hidden border-2 border-slate-200 flex items-center justify-center shadow-inner flex-shrink-0">
+            <img id="principalPhotoPreview" src="<%= settings.principal_photo || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=80' %>" alt="Foto Kepala Sekolah" class="w-full h-full object-cover">
+          </div>
+          <div class="space-y-2 flex-grow text-center sm:text-left">
+            <label class="block font-bold text-slate-700 uppercase tracking-wider text-xs">Ganti Foto Resmi Kepala Sekolah</label>
+            <input type="file" id="principalPhotoInput" name="principal_photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-navy-900 file:text-gold-400 hover:file:bg-navy-800 cursor-pointer">
+            <p class="text-[11px] text-slate-500">Format JPG, PNG, WEBP. Maksimal 5MB.</p>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Teks Sambutan Kepala Sekolah (HTML / Paragraf)</label>
+          <textarea name="principal_speech" rows="6" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-mono leading-relaxed"><%= settings.principal_speech || '' %></textarea>
+        </div>
+      </div>
+
+      <!-- 5. Visi & Misi -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-gold-500"></i> Visi & Misi Sekolah
+        </h3>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Visi Sekolah</label>
+          <textarea name="vision" rows="2" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs leading-relaxed"><%= settings.vision || '' %></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Misi Sekolah (Pisahkan per baris)</label>
+          <textarea name="mission" rows="5" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs leading-relaxed"><%= settings.mission || '' %></textarea>
+        </div>
+      </div>
+
+      <!-- 6. Statistik Sekolah -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-chart-simple text-gold-500"></i> Statistik Ringkasan Sekolah
+        </h3>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Jumlah Siswa</label>
+            <input type="text" name="stats_students" value="<%= settings.stats_students || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-bold text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Jumlah Guru</label>
+            <input type="text" name="stats_teachers" value="<%= settings.stats_teachers || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-bold text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Jumlah Staf TU</label>
+            <input type="text" name="stats_staff" value="<%= settings.stats_staff || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-bold text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Prestasi Terdata</label>
+            <input type="text" name="stats_achievements" value="<%= settings.stats_achievements || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-bold text-xs">
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Konfigurasi PPDB -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h3 class="font-bold text-navy-900 text-sm pb-3 border-b border-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-user-plus text-gold-500"></i> Pengaturan Informasi PPDB
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Tahun Ajaran PPDB</label>
+            <input type="text" name="ppdb_academic_year" value="<%= ppdb.academic_year || '2026/2027' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 font-semibold text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Status PPDB</label>
+            <select name="ppdb_status" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+              <option value="Buka" <%= ppdb.status === 'Buka' ? 'selected' : '' %>>Buka (Sedang Berlangsung)</option>
+              <option value="Tutup" <%= ppdb.status === 'Tutup' ? 'selected' : '' %>>Tutup (Selesai)</option>
+              <option value="Segera" <%= ppdb.status === 'Segera' ? 'selected' : '' %>>Segera Dibuka</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">URL Pendaftaran Resmi</label>
+            <input type="url" name="ppdb_registration_url" value="<%= ppdb.registration_url || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Kontak Helpdesk PPDB</label>
+          <input type="text" name="ppdb_contact_person" value="<%= ppdb.contact_person || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Persyaratan Berkas (Pisahkan per baris)</label>
+          <textarea name="ppdb_requirements" rows="5" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs leading-relaxed"><%= ppdb.requirements || '' %></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Alur Pendaftaran (Pisahkan per baris)</label>
+          <textarea name="ppdb_flow_steps" rows="5" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs leading-relaxed"><%= ppdb.flow_steps || '' %></textarea>
+        </div>
+      </div>
+
+      <!-- Tombol Simpan Seluruh Pengaturan -->
+      <div class="p-6 bg-navy-900 rounded-3xl text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-gold-400 text-xl"></i>
+          <div>
+            <div class="font-bold text-sm">Simpan Seluruh Pengaturan</div>
+            <div class="text-[11px] text-slate-300">Perubahan akan langsung tercermin di halaman publik website sekolah.</div>
+          </div>
+        </div>
+        <button type="submit" class="px-8 py-3 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg transition">
+          <i class="fa-solid fa-floppy-disk mr-1.5"></i> Simpan Pengaturan
+        </button>
+      </div>
+
+    </form>
+  </main>
+</div>
+
+<script>
+  // Live image preview script
+  const logoInput = document.getElementById('logoInput');
+  const logoPreview = document.getElementById('logoPreview');
+  if (logoInput && logoPreview) {
+    logoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          logoPreview.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  const pInput = document.getElementById('principalPhotoInput');
+  const pPreview = document.getElementById('principalPhotoPreview');
+  if (pInput && pPreview) {
+    pInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          pPreview.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+</script>
+
+<%- include('../../partials/admin-footer') %>

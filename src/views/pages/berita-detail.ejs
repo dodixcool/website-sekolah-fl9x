@@ -1,0 +1,122 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<!-- Breadcrumb Header -->
+<div class="bg-navy-950 text-slate-300 py-6 border-b border-navy-800">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="flex items-center space-x-2 text-xs">
+      <a href="/" class="hover:text-gold-400">Beranda</a>
+      <span class="text-slate-500">/</span>
+      <a href="/berita" class="hover:text-gold-400">Berita</a>
+      <span class="text-slate-500">/</span>
+      <span class="text-gold-400 truncate"><%= post.category_name || 'Warta' %></span>
+    </nav>
+  </div>
+</div>
+
+<main class="py-12 bg-slate-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <article class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-200/80">
+      
+      <!-- Kategori Badge -->
+      <% if (post.category_name) { %>
+        <div class="mb-4">
+          <a href="/berita?kategori=<%= post.category_slug %>" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gold-100 text-gold-700 hover:bg-gold-200 transition">
+            <i class="fa-solid fa-tag text-[10px]"></i> <%= post.category_name %>
+          </a>
+        </div>
+      <% } %>
+
+      <!-- Judul Artikel -->
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-navy-900 leading-tight mb-6 tracking-tight">
+        <%= post.title %>
+      </h1>
+
+      <!-- Meta Penulis & Tanggal -->
+      <div class="flex flex-wrap items-center justify-between pb-6 mb-8 border-b border-slate-100 text-xs text-slate-500 gap-4">
+        <div class="flex items-center gap-3">
+          <img src="<%= post.author_avatar || '/images/default-avatar.png' %>" alt="<%= post.author_name %>" class="w-10 h-10 rounded-full object-cover ring-2 ring-gold-400/50">
+          <div>
+            <div class="font-bold text-navy-900 text-sm"><%= post.author_name || 'Admin Humas' %></div>
+            <div class="text-[11px] text-slate-400">Publikasi Resmi SMA Negeri 12 Denpasar</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar text-gold-500"></i> <%= formatDate(post.published_at) %></span>
+          <span class="flex items-center gap-1.5"><i class="fa-regular fa-eye text-gold-500"></i> <%= post.views %> views</span>
+        </div>
+      </div>
+
+      <!-- Featured Image -->
+      <% if (post.thumbnail) { %>
+        <div class="rounded-2xl overflow-hidden mb-8 shadow-md">
+          <img src="<%= post.thumbnail %>" alt="<%= post.title %>" class="w-full h-auto max-h-[500px] object-cover">
+        </div>
+      <% } %>
+
+      <!-- Isi Artikel -->
+      <div class="text-slate-700 text-base leading-relaxed space-y-4 prose prose-slate max-w-none">
+        <%- post.content %>
+      </div>
+
+      <!-- Bagikan Berita -->
+      <div class="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-xs font-bold text-navy-900 flex items-center gap-2">
+          <i class="fa-solid fa-share-nodes text-gold-500 text-sm"></i> Bagikan Warta Ini:
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="https://wa.me/?text=<%= encodeURIComponent(post.title + ' - Baca di: ' + (typeof process !== 'undefined' ? process.env.APP_URL : '')) %>" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition" title="Share ke WhatsApp">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+          </a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(post.slug) %>" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white flex items-center justify-center transition" title="Share ke Facebook">
+            <i class="fa-brands fa-facebook-f text-sm"></i>
+          </a>
+          <a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(post.title) %>" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 hover:bg-sky-600 hover:text-white flex items-center justify-center transition" title="Share ke Twitter/X">
+            <i class="fa-brands fa-x-twitter text-sm"></i>
+          </a>
+          <button onclick="navigator.clipboard.writeText(window.location.href); alert('Tautan berita berhasil disalin!');" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center justify-center transition" title="Salin Tautan">
+            <i class="fa-solid fa-link text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+    </article>
+
+    <!-- Berita Terkait -->
+    <% if (relatedPosts && relatedPosts.length > 0) { %>
+      <div class="mt-12">
+        <h3 class="text-xl font-extrabold text-navy-900 mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-newspaper text-gold-500"></i> Warta Terkait Lainnya
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <% relatedPosts.forEach(rel => { %>
+            <a href="/berita/<%= rel.slug %>" class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition group flex flex-col">
+              <div class="h-36 bg-slate-100 overflow-hidden">
+                <img src="<%= rel.thumbnail %>" alt="<%= rel.title %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              </div>
+              <div class="p-4 flex flex-col flex-grow">
+                <div class="text-[10px] text-slate-400 mb-1">
+                  <i class="fa-regular fa-calendar text-gold-500 mr-1"></i><%= formatShortDate(rel.published_at) %>
+                </div>
+                <h4 class="font-bold text-xs text-navy-900 group-hover:text-gold-600 transition leading-snug line-clamp-2">
+                  <%= rel.title %>
+                </h4>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+
+    <div class="mt-10 text-center">
+      <a href="/berita" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-navy-900 text-white font-semibold text-xs hover:bg-navy-800 transition">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Semua Berita
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

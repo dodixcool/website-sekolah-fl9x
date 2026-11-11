@@ -1,0 +1,187 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<!-- Header Banner -->
+<section class="bg-navy-950 text-white py-14 sm:py-20 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="max-w-3xl">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-gold-500/20 text-gold-300 border border-gold-400/40 mb-3">
+        <i class="fa-solid fa-newspaper text-gold-400"></i> Media Komunikasi
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Berita & Pengumuman</h1>
+      <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+        Pusat informasi publikasi resmi mengenai warta kegiatan, prestasi siswa, pengumuman akademik, dan inovasi pendidikan di SMA Negeri 12 Denpasar.
+      </p>
+    </div>
+  </div>
+  <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+</section>
+
+<!-- Sub Navigation Tabs & Search Bar -->
+<div class="bg-white border-b border-slate-200 sticky top-20 z-40 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- Category Tabs -->
+    <div class="flex items-center space-x-2 overflow-x-auto w-full md:w-auto text-xs font-semibold pb-1 md:pb-0">
+      <a href="/berita" class="px-3.5 py-2 rounded-xl whitespace-nowrap transition <%= !activeCategory ? 'bg-navy-900 text-white shadow' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' %>">
+        Semua Warta
+      </a>
+      <% if (categories && categories.length > 0) { %>
+        <% categories.forEach(cat => { %>
+          <a href="/berita?kategori=<%= cat.slug %><%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="px-3.5 py-2 rounded-xl whitespace-nowrap transition <%= activeCategory === cat.slug ? 'bg-navy-900 text-white shadow' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' %>">
+            <%= cat.name %> (<%= cat.post_count %>)
+          </a>
+        <% }) %>
+      <% } %>
+    </div>
+
+    <!-- Search Form -->
+    <form action="/berita" method="GET" class="relative w-full md:w-72">
+      <% if (activeCategory) { %>
+        <input type="hidden" name="kategori" value="<%= activeCategory %>">
+      <% } %>
+      <input type="text" name="q" value="<%= searchQuery || '' %>" placeholder="Cari warta berita..." class="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 focus:bg-white transition">
+      <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy-900" aria-label="Cari">
+        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+      </button>
+    </form>
+  </div>
+</div>
+
+<main class="py-12 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Kolom Daftar Berita (8 Kolom) -->
+      <div class="lg:col-span-8">
+        <% if (searchQuery) { %>
+          <div class="mb-6 p-4 rounded-xl bg-white border border-slate-200 text-xs flex justify-between items-center">
+            <span>Hasil pencarian untuk: <strong class="text-navy-900">"<%= searchQuery %>"</strong> (<%= totalPosts %> berita ditemukan)</span>
+            <a href="/berita" class="text-rose-600 hover:underline">Hapus Filter</a>
+          </div>
+        <% } %>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <% if (posts && posts.length > 0) { %>
+            <% posts.forEach(post => { %>
+              <article class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col">
+                <a href="/berita/<%= post.slug %>" class="relative block h-48 overflow-hidden bg-slate-100 group">
+                  <img src="<%= post.thumbnail %>" alt="<%= post.title %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                  <% if (post.category_name) { %>
+                    <span class="absolute top-3 left-3 bg-navy-900/90 text-gold-300 text-[11px] font-bold px-2.5 py-1 rounded-lg backdrop-blur-sm">
+                      <%= post.category_name %>
+                    </span>
+                  <% } %>
+                </a>
+                
+                <div class="p-5 flex flex-col flex-grow">
+                  <div class="flex items-center gap-3 text-xs text-slate-400 mb-2">
+                    <span><i class="fa-regular fa-calendar text-gold-500 mr-1"></i><%= formatShortDate(post.published_at) %></span>
+                    <span>&bull;</span>
+                    <span><i class="fa-regular fa-eye mr-1"></i><%= post.views %> views</span>
+                  </div>
+                  
+                  <h3 class="font-bold text-base text-navy-900 hover:text-navy-700 transition line-clamp-2 mb-2">
+                    <a href="/berita/<%= post.slug %>"><%= post.title %></a>
+                  </h3>
+                  
+                  <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed mb-4 flex-grow">
+                    <%= post.excerpt || truncate(post.content, 120) %>
+                  </p>
+                  
+                  <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-500 font-medium">
+                      Oleh: <%= post.author_name || 'Admin' %>
+                    </span>
+                    <a href="/berita/<%= post.slug %>" class="font-bold text-navy-900 hover:text-gold-600 flex items-center gap-1">
+                      Selengkapnya <i class="fa-solid fa-angle-right text-[10px]"></i>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            <% }) %>
+          <% } else { %>
+            <div class="col-span-2 bg-white rounded-2xl p-12 text-center border border-slate-200">
+              <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3 text-2xl">
+                <i class="fa-solid fa-newspaper"></i>
+              </div>
+              <h4 class="font-bold text-navy-900 text-base mb-1">Belum Ada Warta</h4>
+              <p class="text-xs text-slate-500">Tidak ada berita atau pengumuman yang sesuai dengan kriteria Anda.</p>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Pagination -->
+        <% if (totalPages > 1) { %>
+          <div class="mt-10 flex justify-center items-center gap-2">
+            <% if (currentPage > 1) { %>
+              <a href="/berita?page=<%= currentPage - 1 %><%= activeCategory ? '&kategori=' + activeCategory : '' %><%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold hover:bg-slate-50 transition">
+                <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+              </a>
+            <% } %>
+
+            <% for (let p = 1; p <= totalPages; p++) { %>
+              <a href="/berita?page=<%= p %><%= activeCategory ? '&kategori=' + activeCategory : '' %><%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition <%= currentPage === p ? 'bg-navy-900 text-white shadow' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' %>">
+                <%= p %>
+              </a>
+            <% } %>
+
+            <% if (currentPage < totalPages) { %>
+              <a href="/berita?page=<%= currentPage + 1 %><%= activeCategory ? '&kategori=' + activeCategory : '' %><%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold hover:bg-slate-50 transition">
+                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+              </a>
+            <% } %>
+          </div>
+        <% } %>
+
+      </div>
+
+      <!-- Kolom Sidebar (4 Kolom) -->
+      <div class="lg:col-span-4 space-y-6">
+        
+        <!-- Berita Terpopuler -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-navy-900 text-sm mb-4 pb-3 border-b border-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-fire text-amber-500"></i> Warta Terpopuler
+          </h3>
+          <div class="space-y-4">
+            <% if (popularPosts && popularPosts.length > 0) { %>
+              <% popularPosts.forEach((pop, idx) => { %>
+                <a href="/berita/<%= pop.slug %>" class="flex gap-3 items-start group">
+                  <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+                    <img src="<%= pop.thumbnail %>" alt="<%= pop.title %>" class="w-full h-full object-cover group-hover:scale-105 transition">
+                  </div>
+                  <div class="space-y-1">
+                    <h4 class="font-bold text-xs text-navy-900 group-hover:text-gold-600 transition leading-snug line-clamp-2">
+                      <%= pop.title %>
+                    </h4>
+                    <div class="text-[10px] text-slate-400">
+                      <span><%= formatShortDate(pop.published_at) %></span> &bull; <span><%= pop.views %> views</span>
+                    </div>
+                  </div>
+                </a>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- PPDB Mini Banner -->
+        <div class="bg-navy-900 text-white rounded-2xl p-6 border border-gold-400/30 text-center space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-xl mx-auto">
+            <i class="fa-solid fa-user-plus"></i>
+          </div>
+          <h4 class="font-bold text-sm">Informasi PPDB 2026/2027</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Dapatkan petunjuk teknis, kuota zonasi, jalur prestasi, dan persyaratan pendaftaran online.
+          </p>
+          <a href="/ppdb" class="inline-block w-full py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs shadow transition">
+            Lihat Panduan PPDB
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

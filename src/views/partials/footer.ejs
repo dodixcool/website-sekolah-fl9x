@@ -1,0 +1,115 @@
+<footer class="mt-auto bg-navy-950 text-slate-300 pt-16 pb-8 border-t border-navy-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-navy-800/80">
+      
+      <!-- Kolom 1: Profil & Identitas -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-white p-1 flex items-center justify-center ring-1 ring-gold-400/30 overflow-hidden flex-shrink-0">
+            <% if (school.logo_url) { %>
+              <img src="<%= school.logo_url %>" alt="Logo" class="w-full h-full object-contain">
+            <% } else { %>
+              <i class="fa-solid fa-graduation-cap text-navy-900 text-lg"></i>
+            <% } %>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-white text-base tracking-tight"><%= school.school_name || 'SMA Negeri 12 Denpasar' %></h3>
+            <span class="text-xs text-gold-400 font-medium">NPSN <%= school.school_npsn || '69992012' %> &bull; Terakreditasi A</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          <%= school.school_tagline || 'Membina generasi pembelajar yang berkarakter Profil Pelajar Pancasila, unggul dalam sains, teknologi, dan berakar kearifan budaya Bali.' %>
+        </p>
+        <div class="pt-2 flex items-center gap-3">
+          <% if (school.instagram) { %>
+            <a href="<%= school.instagram %>" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-navy-900 hover:bg-gold-500 hover:text-white flex items-center justify-center text-slate-300 transition" title="Instagram"><i class="fa-brands fa-instagram text-sm"></i></a>
+          <% } %>
+          <% if (school.facebook) { %>
+            <a href="<%= school.facebook %>" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-navy-900 hover:bg-gold-500 hover:text-white flex items-center justify-center text-slate-300 transition" title="Facebook"><i class="fa-brands fa-facebook text-sm"></i></a>
+          <% } %>
+          <% if (school.youtube) { %>
+            <a href="<%= school.youtube %>" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-navy-900 hover:bg-gold-500 hover:text-white flex items-center justify-center text-slate-300 transition" title="YouTube"><i class="fa-brands fa-youtube text-sm"></i></a>
+          <% } %>
+          <% if (school.whatsapp) { %>
+            <a href="https://wa.me/<%= (school.whatsapp || '').replace(/[^0-9]/g, '') %>" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-navy-900 hover:bg-gold-500 hover:text-white flex items-center justify-center text-slate-300 transition" title="WhatsApp"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Kolom 2: Navigasi Cepat -->
+      <div>
+        <h4 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-gold-400"></span> Navigasi Cepat
+        </h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="/profil" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-navy-600"></i> Profil & Visi Misi</a></li>
+          <li><a href="/akademik" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-navy-600"></i> Kurikulum & Kalender</a></li>
+          <li><a href="/guru" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-navy-600"></i> Direktori Guru & Staf</a></li>
+          <li><a href="/kesiswaan" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-navy-600"></i> Ekstrakurikuler & Prestasi</a></li>
+          <li><a href="/berita" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-navy-600"></i> Berita & Pengumuman</a></li>
+          <li><a href="/unduhan" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-navy-600"></i> Pusat Unduhan Dokumen</a></li>
+        </ul>
+      </div>
+
+      <!-- Kolom 3: Layanan & Informasi PPDB -->
+      <div>
+        <h4 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-gold-400"></span> Info & Layanan
+        </h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="/ppdb" class="text-gold-400 font-semibold hover:underline flex items-center gap-2"><i class="fa-solid fa-star text-[10px]"></i> Portal Resmi PPDB 2026</a></li>
+          <li><a href="https://disdikpora.baliprov.go.id" target="_blank" rel="noopener" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-navy-600"></i> Disdikpora Provinsi Bali</a></li>
+          <li><a href="https://kemdikbud.go.id" target="_blank" rel="noopener" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-navy-600"></i> Kemendikbudristek RI</a></li>
+          <li><a href="/sitemap.xml" target="_blank" class="hover:text-gold-400 transition flex items-center gap-2"><i class="fa-solid fa-sitemap text-[10px] text-navy-600"></i> Peta Situs (Sitemap)</a></li>
+        </ul>
+        <div class="mt-4 p-3 rounded-lg bg-navy-900 border border-navy-800 text-[11px] text-slate-400">
+          <div class="font-semibold text-slate-200 mb-1"><i class="fa-regular fa-clock text-gold-400 mr-1"></i> Jam Layanan Tata Usaha:</div>
+          <div>Senin - Kamis : 07.30 - 15.30 WITA</div>
+          <div>Jumat : 07.00 - 13.00 WITA</div>
+        </div>
+      </div>
+
+      <!-- Kolom 4: Alamat & Kontak -->
+      <div>
+        <h4 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-gold-400"></span> Kontak Sekolah
+        </h4>
+        <div class="space-y-3 text-xs text-slate-400">
+          <p class="flex items-start gap-2.5">
+            <i class="fa-solid fa-location-dot text-gold-400 mt-0.5"></i>
+            <span><%= school.address || 'Jl. Trengguli No. 12, Penatih, Denpasar Timur, Bali 80238' %></span>
+          </p>
+          <p class="flex items-center gap-2.5">
+            <i class="fa-solid fa-phone text-gold-400"></i>
+            <span><%= school.phone || '(0361) 462912' %></span>
+          </p>
+          <p class="flex items-center gap-2.5">
+            <i class="fa-brands fa-whatsapp text-gold-400"></i>
+            <span><%= school.whatsapp || '081238991212' %></span>
+          </p>
+          <p class="flex items-center gap-2.5">
+            <i class="fa-solid fa-envelope text-gold-400"></i>
+            <span><%= school.email || 'info@sman12denpasar.sch.id' %></span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+      <div>
+        &copy; <%= new Date().getFullYear() %> <span class="text-slate-300 font-semibold"><%= school.school_name || 'SMA Negeri 12 Denpasar' %></span>. Hak Cipta Dilindungi Undang-Undang.
+      </div>
+      <div class="flex items-center gap-4">
+        <span>Kota Denpasar, Provinsi Bali</span>
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 rounded-lg bg-navy-800 hover:bg-gold-500 text-slate-300 hover:text-white flex items-center justify-center transition" title="Kembali ke atas">
+          <i class="fa-solid fa-arrow-up text-xs"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

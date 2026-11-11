@@ -1,0 +1,127 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<!-- Header Banner -->
+<section class="bg-navy-950 text-white py-14 sm:py-20 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="max-w-3xl">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-gold-500/20 text-gold-300 border border-gold-400/40 mb-3">
+        <i class="fa-solid fa-images text-gold-400"></i> Dokumentasi Visual
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Galeri Foto & Video</h1>
+      <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+        Rekaman momen-momen inspiratif, perayaan budaya, prestasi, dan fasilitas pembelajaran di lingkungan SMA Negeri 12 Denpasar.
+      </p>
+    </div>
+  </div>
+  <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+</section>
+
+<!-- Filter Album -->
+<div class="bg-white border-b border-slate-200 sticky top-20 z-40 shadow-sm overflow-x-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center space-x-2 text-xs font-semibold">
+    <a href="/galeri?album=all" class="px-4 py-2 rounded-xl whitespace-nowrap transition <%= activeAlbum === 'all' ? 'bg-navy-900 text-white shadow' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' %>">
+      Semua Album (<%= items.length %>)
+    </a>
+    <% if (albums && albums.length > 0) { %>
+      <% albums.forEach(album => { %>
+        <a href="/galeri?album=<%= encodeURIComponent(album) %>" class="px-4 py-2 rounded-xl whitespace-nowrap transition <%= activeAlbum === album ? 'bg-navy-900 text-white shadow' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' %>">
+          <%= album %>
+        </a>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+
+<main class="py-12 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <% if (items && items.length > 0) { %>
+        <% items.forEach((item, idx) => { %>
+          <div class="gallery-card bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col group cursor-pointer"
+               data-url="<%= item.media_url %>"
+               data-title="<%= item.title %>"
+               data-caption="<%= item.caption || '' %>"
+               onclick="openLightboxFromEl(this)">
+            
+            <div class="h-56 bg-slate-100 relative overflow-hidden">
+              <img src="<%= item.media_url %>" alt="<%= item.title %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+              
+              <span class="absolute top-3 left-3 bg-navy-900/90 text-gold-300 text-[11px] font-bold px-2.5 py-1 rounded-lg backdrop-blur-sm">
+                <%= item.album || 'Dokumentasi' %>
+              </span>
+
+              <!-- Hover overlay with zoom icon -->
+              <div class="absolute inset-0 bg-navy-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white">
+                <div class="w-10 h-10 rounded-full bg-gold-500 flex items-center justify-center text-white shadow-lg">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="font-bold text-navy-900 text-sm leading-snug mb-1">
+                <%= item.title %>
+              </h3>
+              <% if (item.caption) { %>
+                <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                  <%= item.caption %>
+                </p>
+              <% } %>
+            </div>
+
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-span-4 text-center py-16 text-slate-400 text-sm">
+          Belum ada foto dalam album ini.
+        </div>
+      <% } %>
+    </div>
+
+  </div>
+</main>
+
+<!-- Lightbox Modal -->
+<div id="lightboxModal" class="fixed inset-0 z-50 bg-navy-950/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="relative max-w-4xl w-full bg-navy-900 rounded-3xl overflow-hidden shadow-2xl border border-navy-800 text-white">
+    <button onclick="closeLightbox()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 hover:bg-gold-500 text-white flex items-center justify-center transition z-10">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+    <div class="max-h-[70vh] bg-black flex items-center justify-center">
+      <img id="lightboxImg" src="" alt="Pratinjau" class="max-h-[70vh] w-auto max-w-full object-contain">
+    </div>
+    <div class="p-6">
+      <h4 id="lightboxTitle" class="font-bold text-lg text-white mb-1"></h4>
+      <p id="lightboxCaption" class="text-xs text-slate-300 leading-relaxed"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openLightboxFromEl(el) {
+    openLightbox(el.dataset.url || '', el.dataset.title || '', el.dataset.caption || '');
+  }
+
+  function openLightbox(url, title, caption) {
+    document.getElementById('lightboxImg').src = url;
+    document.getElementById('lightboxTitle').innerText = title;
+    document.getElementById('lightboxCaption').innerText = caption;
+    document.getElementById('lightboxModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightboxModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }
+
+  document.getElementById('lightboxModal').addEventListener('click', (e) => {
+    if (e.target.id === 'lightboxModal') {
+      closeLightbox();
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %>

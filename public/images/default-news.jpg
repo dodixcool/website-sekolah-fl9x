@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <rect width="600" height="400" fill="#0B2545" />
+  <rect x="50" y="50" width="500" height="300" rx="15" fill="#1b3254" />
+  <circle cx="300" cy="180" r="50" fill="#e59d33" opacity="0.3" />
+  <text x="300" y="240" font-family="sans-serif" font-size="22" font-weight="bold" fill="#ffffff" text-anchor="middle">SMA NEGERI 12 DENPASAR</text>
+  <text x="300" y="270" font-family="sans-serif" font-size="14" fill="#e59d33" text-anchor="middle">Dokumentasi &amp; Publikasi Resmi</text>
+</svg>

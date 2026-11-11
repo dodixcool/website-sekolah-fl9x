@@ -1,0 +1,491 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/alerts') %>
+
+<!-- 1. HERO SLIDER SECTION -->
+<section class="relative bg-navy-950 overflow-hidden text-white">
+  <!-- Slider Container -->
+  <div id="heroSlider" class="relative w-full h-[520px] sm:h-[580px] lg:h-[640px]">
+    <% if (sliders && sliders.length > 0) { %>
+      <% sliders.forEach((slider, idx) => { %>
+        <div class="slider-item absolute inset-0 transition-opacity duration-1000 ease-in-out <%= idx === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' %>" data-index="<%= idx %>">
+          <!-- Background Image with Gradient Overlay -->
+          <div class="absolute inset-0">
+            <img src="<%= slider.image_url %>" alt="<%= slider.title %>" class="w-full h-full object-cover object-center transform scale-105 transition-transform duration-10000" loading="<%= idx === 0 ? 'eager' : 'lazy' %>">
+            <div class="absolute inset-0 hero-gradient"></div>
+            <!-- Subtle Balinese motif pattern overlay -->
+            <div class="absolute inset-0 bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
+          </div>
+
+          <!-- Content Caption -->
+          <div class="relative max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
+            <div class="max-w-3xl space-y-5 animate-fade-in">
+              <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-gold-500/20 text-gold-300 border border-gold-400/40 backdrop-blur-sm">
+                <i class="fa-solid fa-school text-gold-400"></i> SMA Negeri 12 Denpasar
+              </span>
+              <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-md">
+                <%= slider.title %>
+              </h1>
+              <p class="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl font-normal drop-shadow">
+                <%= slider.subtitle %>
+              </p>
+              <div class="pt-3 flex flex-wrap gap-4">
+                <a href="<%= slider.button_url || '#' %>" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-sm shadow-lg hover:shadow-gold-500/30 transition transform hover:-translate-y-0.5">
+                  <span><%= slider.button_text || 'Pelajari Selengkapnya' %></span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="/profil" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur-sm border border-white/20 transition">
+                  <i class="fa-solid fa-compass"></i> Tur Profil Sekolah
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+
+    <!-- Slider Navigation Buttons -->
+    <div class="absolute bottom-8 right-8 z-20 hidden sm:flex items-center gap-3">
+      <button id="prevSlide" class="w-12 h-12 rounded-xl bg-white/15 hover:bg-gold-500 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-all shadow-lg" aria-label="Slide sebelumnya">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button id="nextSlide" class="w-12 h-12 rounded-xl bg-white/15 hover:bg-gold-500 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-all shadow-lg" aria-label="Slide berikutnya">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Slider Indicators -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      <% if (sliders && sliders.length > 0) { %>
+        <% sliders.forEach((_, idx) => { %>
+          <button class="slide-indicator h-2 rounded-full transition-all duration-300 <%= idx === 0 ? 'w-8 bg-gold-400' : 'w-2.5 bg-white/40' %>" data-slide="<%= idx %>" aria-label="Slide <%= idx + 1 %>"></button>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- 2. QUICK STATS BANNER -->
+<section class="relative z-20 -mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-8">
+    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition">
+      <div class="w-14 h-14 rounded-2xl bg-navy-50 text-navy-900 flex items-center justify-center text-2xl font-bold">
+        <i class="fa-solid fa-user-graduate text-navy-800"></i>
+      </div>
+      <div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-navy-900"><%= school.stats_students || '1.084' %></div>
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Siswa Aktif</div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition">
+      <div class="w-14 h-14 rounded-2xl bg-gold-50 text-gold-600 flex items-center justify-center text-2xl font-bold">
+        <i class="fa-solid fa-chalkboard-user text-gold-600"></i>
+      </div>
+      <div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-navy-900"><%= school.stats_teachers || '68' %></div>
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tenaga Pendidik</div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition">
+      <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-bold">
+        <i class="fa-solid fa-trophy text-amber-600"></i>
+      </div>
+      <div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-navy-900"><%= school.stats_achievements || '156' %>+</div>
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prestasi Kejuaraan</div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition">
+      <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-bold">
+        <i class="fa-solid fa-award text-emerald-600"></i>
+      </div>
+      <div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600">AKREDITASI A</div>
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">BAN-S/M (Nilai 96)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. SAMBUTAN KEPALA SEKOLAH -->
+<section class="py-16 lg:py-24 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Foto Kepala Sekolah -->
+      <div class="lg:col-span-5 relative">
+        <div class="relative mx-auto max-w-sm rounded-3xl overflow-hidden shadow-2xl ring-4 ring-gold-400/40">
+          <img src="<%= school.principal_photo || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&auto=format&fit=crop&q=80' %>" alt="<%= school.principal_name %>" class="w-full h-auto object-cover object-top">
+          <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-transparent opacity-80"></div>
+          <div class="absolute bottom-5 inset-x-5 text-white">
+            <h3 class="font-bold text-lg"><%= school.principal_name %></h3>
+            <p class="text-xs text-gold-300">Kepala SMA Negeri 12 Denpasar</p>
+            <p class="text-[11px] text-slate-300">NIP. <%= school.principal_nip %></p>
+          </div>
+        </div>
+        <!-- Decorative Badge -->
+        <div class="absolute -top-4 -left-4 bg-gold-500 text-white font-extrabold px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2 text-xs">
+          <i class="fa-solid fa-quote-left text-sm"></i> Sambutan
+        </div>
+      </div>
+
+      <!-- Teks Sambutan -->
+      <div class="lg:col-span-7 space-y-6">
+        <div>
+          <span class="text-xs font-bold text-gold-600 tracking-wider uppercase bg-gold-100 px-3 py-1 rounded-full">
+            Pimpinan Sekolah
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-900 mt-2 tracking-tight">
+            Membangun Generasi Cerdas Berkarakter Tri Hita Karana
+          </h2>
+        </div>
+        
+        <div class="text-slate-600 text-sm sm:text-base leading-relaxed space-y-4 prose prose-slate">
+          <%- school.principal_speech %>
+        </div>
+
+        <div class="pt-4 flex flex-wrap items-center gap-4">
+          <a href="/profil#sambutan" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-semibold text-sm transition">
+            <span>Baca Selengkapnya</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
+          <a href="/profil" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-white text-slate-700 font-semibold text-sm transition">
+            <span>Visi, Misi & Tujuan</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 4. BANNER PPDB HIGHLIGHT -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 text-white p-8 sm:p-12 shadow-xl border border-gold-400/30">
+    <div class="relative z-10 flex flex-col lg:flex-row justify-between items-center gap-8">
+      <div class="space-y-3 text-center lg:text-left max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 text-xs font-bold border border-gold-400/30">
+          <i class="fa-solid fa-bullhorn text-gold-400"></i> Pendaftaran Peserta Didik Baru
+        </div>
+        <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+          PPDB SMA Negeri 12 Denpasar Tahun Ajaran <%= ppdb ? ppdb.academic_year : '2026/2027' %>
+        </h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Penerimaan siswa baru dilaksanakan secara transparan melalui jalur Zonasi, Afirmasi, Prestasi Akademik/Non-Akademik, serta Perpindahan Tugas Orang Tua.
+        </p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a href="/ppdb" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-sm shadow-lg hover:shadow-gold-500/30 transition transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-file-signature"></i>
+          <span>Informasi Alur & Syarat</span>
+        </a>
+        <a href="<%= ppdb ? ppdb.registration_url : '#' %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 transition">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <span>Portal SIAP PPDB Bali</span>
+        </a>
+      </div>
+    </div>
+    <!-- Balinese gold glow ornament -->
+    <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  </div>
+</section>
+
+<!-- 5. BERITA & AGENDA SEKOLAH -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div>
+        <span class="text-xs font-bold text-gold-600 tracking-wider uppercase bg-gold-50 px-3 py-1 rounded-full">
+          Kabar Terkini
+        </span>
+        <h2 class="text-3xl font-extrabold text-navy-900 mt-2 tracking-tight">
+          Berita & Informasi Sekolah
+        </h2>
+      </div>
+      <a href="/berita" class="inline-flex items-center gap-2 text-sm font-bold text-navy-900 hover:text-gold-600 transition">
+        <span>Lihat Semua Berita</span>
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Berita Cards (8 Kolom) -->
+      <div class="lg:col-span-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <% if (latestNews && latestNews.length > 0) { %>
+            <% latestNews.forEach(post => { %>
+              <article class="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                <a href="/berita/<%= post.slug %>" class="relative block h-48 overflow-hidden bg-slate-100 group">
+                  <img src="<%= post.thumbnail %>" alt="<%= post.title %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                  <% if (post.category_name) { %>
+                    <span class="absolute top-3 left-3 bg-navy-900/90 text-gold-300 text-[11px] font-bold px-2.5 py-1 rounded-lg backdrop-blur-sm">
+                      <%= post.category_name %>
+                    </span>
+                  <% } %>
+                </a>
+                <div class="p-5 flex flex-col flex-grow">
+                  <div class="flex items-center gap-3 text-xs text-slate-400 mb-2">
+                    <span><i class="fa-regular fa-calendar text-gold-500 mr-1"></i><%= formatShortDate(post.published_at) %></span>
+                    <span>&bull;</span>
+                    <span><i class="fa-regular fa-eye mr-1"></i><%= post.views %> dibaca</span>
+                  </div>
+                  <h3 class="font-bold text-base text-navy-900 hover:text-navy-700 transition line-clamp-2 mb-2">
+                    <a href="/berita/<%= post.slug %>"><%= post.title %></a>
+                  </h3>
+                  <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4 flex-grow">
+                    <%= post.excerpt || truncate(post.content, 110) %>
+                  </p>
+                  <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-medium text-slate-500">
+                      Oleh: <%= post.author_name || 'Admin Humas' %>
+                    </span>
+                    <a href="/berita/<%= post.slug %>" class="text-xs font-bold text-navy-900 hover:text-gold-600 flex items-center gap-1">
+                      Baca <i class="fa-solid fa-angle-right text-[10px]"></i>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            <% }) %>
+          <% } else { %>
+            <div class="col-span-2 text-center py-10 text-slate-400 text-sm">
+              Belum ada berita yang dipublikasikan.
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Agenda Kegiatan Sidebar (4 Kolom) -->
+      <div class="lg:col-span-4 space-y-6">
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
+          <div class="flex items-center justify-between mb-5">
+            <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
+              <i class="fa-solid fa-calendar-day text-gold-500"></i> Agenda Kegiatan
+            </h3>
+            <span class="text-xs font-semibold text-slate-400">Kalender</span>
+          </div>
+
+          <div class="space-y-4">
+            <% if (upcomingEvents && upcomingEvents.length > 0) { %>
+              <% upcomingEvents.forEach(evt => { %>
+                <div class="p-3.5 bg-white rounded-xl border border-slate-200/80 shadow-sm hover:border-gold-300 transition">
+                  <div class="flex gap-3.5 items-start">
+                    <!-- Date badge -->
+                    <div class="w-12 h-12 rounded-xl bg-navy-900 text-gold-400 flex flex-col items-center justify-center flex-shrink-0">
+                      <span class="text-xs font-extrabold leading-none"><%= new Date(evt.start_date).getDate() %></span>
+                      <span class="text-[9px] uppercase font-bold tracking-tight"><%= new Date(evt.start_date).toLocaleDateString('id-ID', { month: 'short' }) %></span>
+                    </div>
+                    <div class="space-y-1">
+                      <h4 class="font-bold text-xs text-navy-900 leading-snug line-clamp-2"><%= evt.title %></h4>
+                      <p class="text-[11px] text-slate-500 flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-slate-400 text-[10px]"></i> <%= evt.location %>
+                      </p>
+                      <% if (evt.time_info) { %>
+                        <p class="text-[10px] text-gold-600 font-medium">
+                          <i class="fa-regular fa-clock mr-1"></i> <%= evt.time_info %>
+                        </p>
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p class="text-xs text-slate-400 text-center py-4">Belum ada agenda terdekat.</p>
+            <% } %>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-200">
+            <a href="/akademik" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-semibold text-xs transition">
+              <i class="fa-solid fa-calendar-days"></i> Lihat Kalender Akademik
+            </a>
+          </div>
+        </div>
+
+        <!-- Tautan Cepat Banner Layanan Digital -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-gold-500 to-gold-600 text-white space-y-3 shadow-md">
+          <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+            <i class="fa-solid fa-link"></i> Portal Layanan Digital
+          </div>
+          <h4 class="font-extrabold text-lg">Akses Cepat Pembelajaran</h4>
+          <p class="text-xs text-white/90 leading-relaxed">
+            Portal ujian CBT, perpustakaan daring, dan e-rapor dapat diakses langsung oleh siswa & orang tua.
+          </p>
+          <div class="pt-2 flex flex-col gap-2">
+            <a href="/akademik#jadwal" class="px-3.5 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-white font-semibold text-xs backdrop-blur-sm flex items-center justify-between">
+              <span>Jadwal Pelajaran & Kalender</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </a>
+            <a href="/unduhan" class="px-3.5 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-white font-semibold text-xs backdrop-blur-sm flex items-center justify-between">
+              <span>Unduh Silabus & Dokumen</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- 6. PRESTASI SISWA HIGHLIGHT -->
+<section class="py-16 bg-slate-50 border-t border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-bold text-gold-600 tracking-wider uppercase bg-gold-100 px-3 py-1 rounded-full">
+        Kebanggaan Sekolah
+      </span>
+      <h2 class="text-3xl font-extrabold text-navy-900 mt-2 tracking-tight">
+        Prestasi Gemilang Siswa Smandas
+      </h2>
+      <p class="text-xs sm:text-sm text-slate-500 mt-2">
+        Apresiasi atas dedikasi dan kerja keras putra-putri terbaik dalam kompetisi sains, teknologi, olahraga, dan seni budaya.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <% if (topAchievements && topAchievements.length > 0) { %>
+        <% topAchievements.forEach(ach => { %>
+          <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-lg transition flex flex-col">
+            <div class="h-44 bg-slate-200 relative overflow-hidden">
+              <img src="<%= ach.photo || 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&auto=format&fit=crop&q=80' %>" alt="<%= ach.title %>" class="w-full h-full object-cover" loading="lazy">
+              <span class="absolute top-3 right-3 bg-gold-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow">
+                <%= ach.level %>
+              </span>
+            </div>
+            <div class="p-5 flex flex-col flex-grow">
+              <div class="text-[11px] font-bold text-gold-600 uppercase mb-1">
+                <%= ach.rank %> &bull; Tahun <%= ach.year %>
+              </div>
+              <h3 class="font-bold text-navy-900 text-sm leading-snug mb-2">
+                <%= ach.title %>
+              </h3>
+              <p class="text-xs text-slate-600 mb-3 font-medium">
+                <i class="fa-solid fa-user-check text-navy-800 mr-1.5"></i> <%= ach.student_name %>
+              </p>
+              <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed flex-grow">
+                <%= ach.description %>
+              </p>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="/kesiswaan#prestasi" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs shadow transition">
+        <i class="fa-solid fa-trophy text-gold-400"></i>
+        <span>Lihat Semua Galeri Prestasi Siswa</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 7. GALERI KEGIATAN SEKOLAH -->
+<section class="py-16 bg-white border-t border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+      <div>
+        <span class="text-xs font-bold text-gold-600 tracking-wider uppercase bg-gold-50 px-3 py-1 rounded-full">
+          Dokumentasi
+        </span>
+        <h2 class="text-3xl font-extrabold text-navy-900 mt-2 tracking-tight">
+          Galeri Kegiatan & Fasilitas
+        </h2>
+      </div>
+      <a href="/galeri" class="inline-flex items-center gap-2 text-sm font-bold text-navy-900 hover:text-gold-600 transition">
+        <span>Buka Album Lengkap</span>
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+      <% if (quickGalleries && quickGalleries.length > 0) { %>
+        <% quickGalleries.forEach(item => { %>
+          <a href="/galeri" class="group relative rounded-xl overflow-hidden aspect-square bg-slate-100 shadow-sm block">
+            <img src="<%= item.media_url %>" alt="<%= item.title %>" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" loading="lazy">
+            <div class="absolute inset-0 bg-navy-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-2 text-center text-white">
+              <span class="text-[11px] font-semibold line-clamp-2"><%= item.title %></span>
+            </div>
+          </a>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- HERO SLIDER LOGIC SCRIPT -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.slider-item');
+    const indicators = document.querySelectorAll('.slide-indicator');
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
+    let currentIdx = 0;
+    let timer = null;
+
+    if (slides.length <= 1) return;
+
+    function showSlide(index) {
+      slides.forEach((s, i) => {
+        if (i === index) {
+          s.classList.remove('opacity-0', 'z-0');
+          s.classList.add('opacity-100', 'z-10');
+        } else {
+          s.classList.remove('opacity-100', 'z-10');
+          s.classList.add('opacity-0', 'z-0');
+        }
+      });
+
+      indicators.forEach((ind, i) => {
+        if (i === index) {
+          ind.classList.remove('w-2.5', 'bg-white/40');
+          ind.classList.add('w-8', 'bg-gold-400');
+        } else {
+          ind.classList.remove('w-8', 'bg-gold-400');
+          ind.classList.add('w-2.5', 'bg-white/40');
+        }
+      });
+      currentIdx = index;
+    }
+
+    function nextSlide() {
+      const next = (currentIdx + 1) % slides.length;
+      showSlide(next);
+    }
+
+    function prevSlide() {
+      const prev = (currentIdx - 1 + slides.length) % slides.length;
+      showSlide(prev);
+    }
+
+    function startAuto() {
+      timer = setInterval(nextSlide, 6000);
+    }
+
+    function resetAuto() {
+      clearInterval(timer);
+      startAuto();
+    }
+
+    if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetAuto(); });
+    if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetAuto(); });
+
+    indicators.forEach((ind) => {
+      ind.addEventListener('click', () => {
+        const idx = parseInt(ind.getAttribute('data-slide'));
+        showSlide(idx);
+        resetAuto();
+      });
+    });
+
+    startAuto();
+  });
+</script>
+
+<%- include('../partials/footer') %>

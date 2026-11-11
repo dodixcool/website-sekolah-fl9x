@@ -1,0 +1,25 @@
+<!-- Admin Top Navbar -->
+<header class="h-20 bg-white border-b border-slate-200 px-6 flex items-center justify-between flex-shrink-0 z-20">
+  <div class="flex items-center gap-4">
+    <button id="toggleSidebarBtn" class="text-slate-600 hover:text-navy-900 focus:outline-none p-2 rounded-xl hover:bg-slate-100 transition" aria-label="Toggle Sidebar">
+      <i class="fa-solid fa-bars-staggered text-lg"></i>
+    </button>
+    <h2 class="text-base sm:text-lg font-extrabold text-navy-900 tracking-tight">
+      <%= typeof title !== 'undefined' ? title : 'Panel Administrasi Sekolah' %>
+    </h2>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <!-- Tombol Lihat Web Publik -->
+    <a href="/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition">
+      <i class="fa-solid fa-arrow-up-right-from-square text-[11px] text-gold-600"></i>
+      <span class="hidden sm:inline">Lihat Web Publik</span>
+    </a>
+
+    <!-- Profil Singkat -->
+    <div class="flex items-center gap-2 pl-3 border-l border-slate-200 text-xs">
+      <span class="hidden md:inline font-bold text-navy-900"><%= user.name %></span>
+      <span class="hidden md:inline px-2 py-0.5 rounded-full text-[10px] font-bold bg-navy-100 text-navy-800 uppercase"><%= user.role %></span>
+    </div>
+  </div>
+</header>

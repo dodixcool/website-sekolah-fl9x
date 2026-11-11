@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : (school.school_name || 'SMA Negeri 12 Denpasar') %></title>
+  
+  <!-- Meta SEO -->
+  <meta name="description" content="<%= school.school_tagline || 'Website Resmi SMA Negeri 12 Denpasar. Sekolah unggul dalam prestasi, berkarakter dan berakar kearifan budaya Bali.' %>">
+  <meta name="keywords" content="SMA Negeri 12 Denpasar, SMANDAS, SMA Denpasar, PPDB SMA Denpasar, Sekolah Terbaik Denpasar, Pendidikan Bali">
+  <meta name="author" content="SMA Negeri 12 Denpasar">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : school.school_name %>">
+  <meta property="og:description" content="<%= school.school_tagline %>">
+  <meta property="og:image" content="<%= school.logo_url || '/images/logo-sekolah.svg' %>">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="<%= school.logo_url || '/images/logo-sekolah.svg' %>">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            navy: {
+              50: '#f0f4f9',
+              100: '#dde6f2',
+              200: '#c1d2e8',
+              300: '#96b6da',
+              400: '#6593c8',
+              500: '#4375b4',
+              600: '#325e98',
+              700: '#2a4b7c',
+              800: '#1b3254',
+              900: '#0B2545', // Warna Identitas Utama Navy SMAN 12
+              950: '#07162b',
+            },
+            gold: {
+              50: '#fefbf2',
+              100: '#fcf4e3',
+              200: '#fae7c3',
+              300: '#f5d496',
+              400: '#eeb85f',
+              500: '#e59d33',
+              600: '#d97706', // Warna Emas/Amber
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, rgba(11, 37, 69, 0.95) 0%, rgba(27, 50, 84, 0.85) 100%);
+    }
+    .badge-gold {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+    .text-balance {
+      text-wrap: balance;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen antialiased selection:bg-gold-500 selection:text-white">

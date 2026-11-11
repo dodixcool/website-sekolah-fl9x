@@ -1,0 +1,78 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Edit Ekstrakurikuler</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Perbarui informasi "<%= extra.name %>"</p>
+      </div>
+      <a href="/admin/extracurriculars" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold hover:bg-slate-50 transition">
+        <i class="fa-solid fa-arrow-left"></i> Kembali
+      </a>
+    </div>
+
+    <div class="max-w-3xl bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+      <form action="/admin/extracurriculars/<%= extra.id %>" method="POST" enctype="multipart/form-data" class="space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="name" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nama Ekstrakurikuler <span class="text-rose-500">*</span></label>
+            <input type="text" id="name" name="name" required value="<%= extra.name %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+          </div>
+          <div>
+            <label for="category" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Kategori Bidang</label>
+            <select id="category" name="category" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+              <option value="Seni & Budaya Bali" <%= extra.category === 'Seni & Budaya Bali' ? 'selected' : '' %>>Seni & Budaya Bali</option>
+              <option value="Sains & Teknologi" <%= extra.category === 'Sains & Teknologi' ? 'selected' : '' %>>Sains & Teknologi</option>
+              <option value="Olahraga Prestasi" <%= extra.category === 'Olahraga Prestasi' ? 'selected' : '' %>>Olahraga Prestasi</option>
+              <option value="Kepanduan & Karakter" <%= extra.category === 'Kepanduan & Karakter' ? 'selected' : '' %>>Kepanduan & Karakter</option>
+              <option value="Kemanusiaan & Kesehatan" <%= extra.category === 'Kemanusiaan & Kesehatan' ? 'selected' : '' %>>Kemanusiaan & Kesehatan</option>
+              <option value="Bahasa & Komunikasi" <%= extra.category === 'Bahasa & Komunikasi' ? 'selected' : '' %>>Bahasa & Komunikasi</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="mentor" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Guru Pembina / Pelatih</label>
+            <input type="text" id="mentor" name="mentor" value="<%= extra.mentor || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label for="schedule" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Jadwal Latihan</label>
+            <input type="text" id="schedule" name="schedule" value="<%= extra.schedule || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label for="location" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Lokasi / Ruang Latihan</label>
+            <input type="text" id="location" name="location" value="<%= extra.location || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Foto Dokumentasi Kegiatan</label>
+          <% if (extra.photo) { %>
+            <div class="mb-2 w-24 h-16 rounded-xl overflow-hidden bg-slate-100">
+              <img src="<%= extra.photo %>" alt="" class="w-full h-full object-cover">
+            </div>
+          <% } %>
+          <input type="file" name="photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-navy-50 file:text-navy-900 hover:file:bg-navy-100 cursor-pointer">
+        </div>
+
+        <div>
+          <label for="description" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Deskripsi & Visi Ekstrakurikuler</label>
+          <textarea id="description" name="description" rows="3" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs"><%= extra.description || '' %></textarea>
+        </div>
+
+        <div class="pt-3">
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs uppercase tracking-wider shadow transition">
+            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<%- include('../../partials/admin-footer') %>

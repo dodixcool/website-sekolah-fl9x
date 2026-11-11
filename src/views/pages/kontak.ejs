@@ -1,0 +1,170 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/alerts') %>
+
+<!-- Header Banner -->
+<section class="bg-navy-950 text-white py-14 sm:py-20 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="max-w-3xl">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-gold-500/20 text-gold-300 border border-gold-400/40 mb-3">
+        <i class="fa-solid fa-headset text-gold-400"></i> Layanan Komunikasi
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Hubungi Kami</h1>
+      <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+        Pintu komunikasi, kritik, saran, layanan permohonan informasi publik, dan kemitraan dengan SMA Negeri 12 Denpasar.
+      </p>
+    </div>
+  </div>
+  <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+</section>
+
+<main class="py-12 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Formulir Pesan (7 Kolom) -->
+      <div class="lg:col-span-7 bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-slate-200/80">
+        <div class="mb-6">
+          <span class="text-xs font-bold text-gold-600 uppercase tracking-wider bg-gold-50 px-3 py-1 rounded-full">
+            Buku Tamu & Pengaduan
+          </span>
+          <h2 class="text-2xl font-extrabold text-navy-900 mt-2 tracking-tight">
+            Kirimkan Pesan atau Aspirasi Anda
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">
+            Kolom bertanda bintang (<span class="text-rose-500">*</span>) wajib diisi. Pesan Anda akan langsung diterima oleh sekretariat sekolah.
+          </p>
+        </div>
+
+        <form action="/kontak/kirim" method="POST" class="space-y-4 text-xs">
+          <!-- Honeypot Anti-Spam Bot (Disembunyikan dari manusia) -->
+          <div style="display:none !important; visibility:hidden !important;" aria-hidden="true">
+            <label for="website_url_hp">Website HP</label>
+            <input type="text" id="website_url_hp" name="website_url_hp" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="block font-bold text-slate-700 mb-1.5">Nama Lengkap <span class="text-rose-500">*</span></label>
+              <input type="text" id="name" name="name" required placeholder="Contoh: I Putu Widya" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 focus:bg-white transition text-xs">
+            </div>
+
+            <div>
+              <label for="email" class="block font-bold text-slate-700 mb-1.5">Alamat Email <span class="text-rose-500">*</span></label>
+              <input type="email" id="email" name="email" required placeholder="emailanda@gmail.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 focus:bg-white transition text-xs">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="phone" class="block font-bold text-slate-700 mb-1.5">Nomor WhatsApp / HP</label>
+              <input type="tel" id="phone" name="phone" placeholder="08123456789" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 focus:bg-white transition text-xs">
+            </div>
+
+            <div>
+              <label for="subject" class="block font-bold text-slate-700 mb-1.5">Subjek / Topik <span class="text-rose-500">*</span></label>
+              <input type="text" id="subject" name="subject" required placeholder="Perihal pesan Anda" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 focus:bg-white transition text-xs">
+            </div>
+          </div>
+
+          <div>
+            <label for="message" class="block font-bold text-slate-700 mb-1.5">Isi Pesan / Pertanyaan <span class="text-rose-500">*</span></label>
+            <textarea id="message" name="message" rows="5" required placeholder="Tuliskan pesan, pertanyaan, atau saran Anda secara rinci..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 focus:bg-white transition text-xs leading-relaxed"></textarea>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs shadow-md transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-paper-plane text-gold-400"></i>
+              <span>Kirimkan Pesan Sekarang</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Info Kontak & Lokasi (5 Kolom) -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- Detail Kontak Card -->
+        <div class="bg-navy-900 text-white rounded-3xl p-8 shadow-lg border border-navy-800 space-y-6">
+          <h3 class="text-lg font-extrabold tracking-tight flex items-center gap-2">
+            <i class="fa-solid fa-school text-gold-400"></i> Sekretariat Sekolah
+          </h3>
+
+          <div class="space-y-4 text-xs">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-xl bg-white/10 text-gold-400 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div class="space-y-0.5">
+                <div class="font-bold text-slate-300">Alamat Kampus:</div>
+                <div class="text-slate-400 leading-relaxed"><%= school.address || 'Jl. Trengguli No. 12, Kel. Penatih, Kec. Denpasar Timur, Kota Denpasar, Bali 80238' %></div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-xl bg-white/10 text-gold-400 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-phone"></i>
+              </div>
+              <div class="space-y-0.5">
+                <div class="font-bold text-slate-300">Telepon Resmi:</div>
+                <div class="text-slate-400"><%= school.phone || '(0361) 462912' %></div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-xl bg-white/10 text-gold-400 flex items-center justify-center flex-shrink-0">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+              <div class="space-y-0.5">
+                <div class="font-bold text-slate-300">WhatsApp Pelayanan:</div>
+                <div class="text-slate-400"><%= school.whatsapp || '081238991212' %></div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-xl bg-white/10 text-gold-400 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div class="space-y-0.5">
+                <div class="font-bold text-slate-300">Surat Elektronik (Email):</div>
+                <div class="text-slate-400"><%= school.email || 'info@sman12denpasar.sch.id' %></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-navy-800 flex items-center gap-3">
+            <span class="text-[11px] text-slate-400">Media Sosial:</span>
+            <% if (school.instagram) { %>
+              <a href="<%= school.instagram %>" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-gold-500 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram text-xs"></i></a>
+            <% } %>
+            <% if (school.facebook) { %>
+              <a href="<%= school.facebook %>" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-gold-500 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook text-xs"></i></a>
+            <% } %>
+            <% if (school.youtube) { %>
+              <a href="<%= school.youtube %>" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-gold-500 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-youtube text-xs"></i></a>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Google Maps Embed -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 p-2">
+          <iframe 
+            src="<%= school.maps_embed || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15777.30064560731!2d115.235!3d-8.625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f81e36f98ef%3A0x7d06e2e5e4d!2sDenpasar%20Timur%2C%20Kota%20Denpasar%2C%20Bali!5e0!3m2!1sid!2sid!4v1700000000000' %>" 
+            width="100%" 
+            height="260" 
+            style="border:0; border-radius: 1.25rem;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

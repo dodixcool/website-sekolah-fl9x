@@ -1,0 +1,109 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <%- include('../../partials/alerts') %>
+
+    <div>
+      <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Manajemen Galeri Foto & Video</h1>
+      <p class="text-xs text-slate-500 mt-0.5">Unggah dokumentasi kegiatan sekolah, sarana prasarana, dan pentas kesenian</p>
+    </div>
+
+    <!-- Form Upload Media Baru -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+      <h3 class="font-bold text-navy-900 text-sm mb-4 pb-3 border-b border-slate-100 flex items-center gap-2">
+        <i class="fa-solid fa-cloud-arrow-up text-gold-500"></i> Tambah Media ke Galeri
+      </h3>
+
+      <form action="/admin/gallery" method="POST" enctype="multipart/form-data" class="space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="title" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Judul / Nama Media <span class="text-rose-500">*</span></label>
+            <input type="text" id="title" name="title" required placeholder="Contoh: Upacara Bendera HUT RI" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+          </div>
+          <div>
+            <label for="album" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nama Album</label>
+            <input type="text" id="album" name="album" placeholder="Contoh: Kegiatan Sekolah / Sarana Prasarana" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label for="type" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Tipe Media</label>
+            <select id="type" name="type" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+              <option value="photo">Foto (Image)</option>
+              <option value="video">Video</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Unggah File Foto / Media</label>
+            <input type="file" name="media_file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-navy-50 file:text-navy-900 hover:file:bg-navy-100 cursor-pointer">
+          </div>
+          <div>
+            <label for="external_url" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Atau Tautan URL Eksternal (Unsplash/CDN)</label>
+            <input type="url" id="external_url" name="external_url" placeholder="https://..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label for="caption" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Keterangan / Caption Foto</label>
+          <input type="text" id="caption" name="caption" placeholder="Keterangan singkat momen dokumentasi..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs uppercase tracking-wider shadow transition">
+            <i class="fa-solid fa-plus mr-1"></i> Tambahkan ke Galeri
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Grid Koleksi Galeri Saat Ini -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+      <h3 class="font-bold text-navy-900 text-sm mb-6 flex items-center justify-between">
+        <span><i class="fa-solid fa-images text-gold-500 mr-2"></i>Koleksi Galeri Media Terdaftar</span>
+        <span class="text-xs text-slate-400 font-semibold"><%= items.length %> Item</span>
+      </h3>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <% if (items && items.length > 0) { %>
+          <% items.forEach(g => { %>
+            <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 group relative flex flex-col">
+              <div class="h-32 bg-slate-200 relative overflow-hidden">
+                <img src="<%= g.media_url %>" alt="" class="w-full h-full object-cover">
+                <span class="absolute top-2 left-2 bg-navy-900/80 text-white text-[9px] font-bold px-1.5 py-0.5 rounded backdrop-blur-sm">
+                  <%= g.album %>
+                </span>
+              </div>
+              <div class="p-3 flex flex-col justify-between flex-grow text-xs">
+                <div>
+                  <h4 class="font-bold text-navy-900 text-[11px] line-clamp-1 mb-0.5"><%= g.title %></h4>
+                  <% if (g.caption) { %>
+                    <p class="text-[10px] text-slate-500 line-clamp-1"><%= g.caption %></p>
+                  <% } %>
+                </div>
+                <div class="pt-2 mt-2 border-t border-slate-200 flex justify-end">
+                  <form action="/admin/gallery/<%= g.id %>/delete" method="POST" onsubmit="return confirm('Hapus item galeri ini?')">
+                    <button type="submit" class="text-rose-600 hover:text-rose-800 text-[11px] font-semibold flex items-center gap-1">
+                      <i class="fa-solid fa-trash-can"></i> Hapus
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="col-span-6 text-center py-12 text-slate-400 text-xs">
+            Belum ada media galeri yang diunggah.
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<%- include('../../partials/admin-footer') %>

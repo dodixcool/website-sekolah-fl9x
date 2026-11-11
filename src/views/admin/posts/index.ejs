@@ -1,0 +1,99 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <%- include('../../partials/alerts') %>
+
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Manajemen Berita & Pengumuman</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola publikasi artikel, warta kegiatan, dan pengumuman resmi sekolah</p>
+      </div>
+      <a href="/admin/posts/create" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs shadow transition">
+        <i class="fa-solid fa-plus text-gold-400"></i> Tulis Berita Baru
+      </a>
+    </div>
+
+    <!-- Table of posts -->
+    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-4 px-6 w-16 text-center">Thumbnail</th>
+              <th class="py-4 px-6">Judul Artikel</th>
+              <th class="py-4 px-6">Kategori</th>
+              <th class="py-4 px-6">Penulis</th>
+              <th class="py-4 px-6">Status</th>
+              <th class="py-4 px-6 text-center">Dibaca</th>
+              <th class="py-4 px-6 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <% if (posts && posts.length > 0) { %>
+              <% posts.forEach(post => { %>
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="py-4 px-6 text-center">
+                    <img src="<%= post.thumbnail %>" alt="" class="w-12 h-12 rounded-xl object-cover bg-slate-100 mx-auto">
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-bold text-navy-900 text-sm line-clamp-1"><%= post.title %></div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">
+                      <%= formatDate(post.published_at) %>
+                    </div>
+                  </td>
+                  <td class="py-4 px-6">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-bold bg-navy-50 text-navy-800 border border-navy-100">
+                      <%= post.category_name || 'Berita' %>
+                    </span>
+                  </td>
+                  <td class="py-4 px-6 text-slate-600 font-medium">
+                    <%= post.author_name || 'Admin' %>
+                  </td>
+                  <td class="py-4 px-6">
+                    <% if (post.status === 'published') { %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                        Tayang
+                      </span>
+                    <% } else { %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">
+                        Draf
+                      </span>
+                    <% } %>
+                  </td>
+                  <td class="py-4 px-6 text-center text-slate-500 font-semibold">
+                    <%= post.views %>
+                  </td>
+                  <td class="py-4 px-6 text-right space-x-1">
+                    <a href="/berita/<%= post.slug %>" target="_blank" class="p-2 rounded-xl text-slate-400 hover:text-navy-900 hover:bg-slate-100 inline-block transition" title="Lihat di Web">
+                      <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                    <a href="/admin/posts/<%= post.id %>/edit" class="p-2 rounded-xl text-slate-400 hover:text-navy-900 hover:bg-slate-100 inline-block transition" title="Edit">
+                      <i class="fa-solid fa-pen-to-square text-xs"></i>
+                    </a>
+                    <form action="/admin/posts/<%= post.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini? Tindakan tidak dapat dibatalkan.')">
+                      <button type="submit" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 inline-block transition" title="Hapus">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center py-12 text-slate-400 text-xs">
+                  Belum ada berita yang ditulis. Silakan klik tombol "Tulis Berita Baru".
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('../../partials/admin-footer') %>

@@ -1,0 +1,94 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Edit Data Prestasi</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Perbarui dokumentasi prestasi "<%= achievement.title %>"</p>
+      </div>
+      <a href="/admin/achievements" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold hover:bg-slate-50 transition">
+        <i class="fa-solid fa-arrow-left"></i> Kembali
+      </a>
+    </div>
+
+    <div class="max-w-3xl bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+      <form action="/admin/achievements/<%= achievement.id %>" method="POST" enctype="multipart/form-data" class="space-y-4 text-xs">
+        <div>
+          <label for="title" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nama Lomba / Kejuaraan <span class="text-rose-500">*</span></label>
+          <input type="text" id="title" name="title" required value="<%= achievement.title %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="student_name" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nama Siswa / Tim <span class="text-rose-500">*</span></label>
+            <input type="text" id="student_name" name="student_name" required value="<%= achievement.student_name %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+          </div>
+          <div>
+            <label for="rank" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Peringkat / Medali <span class="text-rose-500">*</span></label>
+            <input type="text" id="rank" name="rank" required value="<%= achievement.rank %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="level" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Tingkat Kejuaraan</label>
+            <select id="level" name="level" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+              <option value="Kota/Kabupaten" <%= achievement.level === 'Kota/Kabupaten' ? 'selected' : '' %>>Kota / Kabupaten</option>
+              <option value="Provinsi" <%= achievement.level === 'Provinsi' ? 'selected' : '' %>>Provinsi</option>
+              <option value="Nasional" <%= achievement.level === 'Nasional' ? 'selected' : '' %>>Nasional</option>
+              <option value="Internasional" <%= achievement.level === 'Internasional' ? 'selected' : '' %>>Internasional</option>
+              <option value="Kecamatan" <%= achievement.level === 'Kecamatan' ? 'selected' : '' %>>Kecamatan</option>
+            </select>
+          </div>
+          <div>
+            <label for="category" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Bidang / Kategori</label>
+            <select id="category" name="category" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+              <option value="Akademik" <%= achievement.category === 'Akademik' ? 'selected' : '' %>>Akademik / Sains</option>
+              <option value="Seni Budaya" <%= achievement.category === 'Seni Budaya' ? 'selected' : '' %>>Seni Budaya Bali & Musik</option>
+              <option value="Olahraga" <%= achievement.category === 'Olahraga' ? 'selected' : '' %>>Olahraga</option>
+              <option value="Teknologi" <%= achievement.category === 'Teknologi' ? 'selected' : '' %>>Teknologi & Robotika</option>
+              <option value="Non-Akademik" <%= achievement.category === 'Non-Akademik' ? 'selected' : '' %>>Non-Akademik Lainnya</option>
+            </select>
+          </div>
+          <div>
+            <label for="year" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Tahun Perolehan</label>
+            <input type="number" id="year" name="year" value="<%= achievement.year %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="organizer" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Instansi Penyelenggara</label>
+            <input type="text" id="organizer" name="organizer" value="<%= achievement.organizer || '' %>" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Foto Penyerahan Piala / Piagam</label>
+            <% if (achievement.photo) { %>
+              <div class="mb-2 w-24 h-16 rounded-xl overflow-hidden bg-slate-100">
+                <img src="<%= achievement.photo %>" alt="" class="w-full h-full object-cover">
+              </div>
+            <% } %>
+            <input type="file" name="photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-navy-50 file:text-navy-900 hover:file:bg-navy-100 cursor-pointer">
+          </div>
+        </div>
+
+        <div>
+          <label for="description" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Catatan / Deskripsi Prestasi</label>
+          <textarea id="description" name="description" rows="3" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs"><%= achievement.description || '' %></textarea>
+        </div>
+
+        <div class="pt-3">
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs uppercase tracking-wider shadow transition">
+            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<%- include('../../partials/admin-footer') %>

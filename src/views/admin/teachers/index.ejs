@@ -1,0 +1,86 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <%- include('../../partials/alerts') %>
+
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Manajemen Guru & Karyawan</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola direktori pendidik, tenaga kependidikan, NIP, mapel, dan foto profil</p>
+      </div>
+      <a href="/admin/teachers/create" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs shadow transition">
+        <i class="fa-solid fa-plus text-gold-400"></i> Tambah Guru / Staf
+      </a>
+    </div>
+
+    <!-- Table of teachers -->
+    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-4 px-6 w-16 text-center">Foto</th>
+              <th class="py-4 px-6">Nama Lengkap & NIP</th>
+              <th class="py-4 px-6">Peran & Jabatan</th>
+              <th class="py-4 px-6">Mata Pelajaran</th>
+              <th class="py-4 px-6">Pendidikan</th>
+              <th class="py-4 px-6 text-center">Urutan</th>
+              <th class="py-4 px-6 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <% if (teachers && teachers.length > 0) { %>
+              <% teachers.forEach(t => { %>
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="py-4 px-6 text-center">
+                    <img src="<%= t.photo || '/images/default-teacher.png' %>" alt="" class="w-10 h-10 rounded-full object-cover bg-slate-100 mx-auto">
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-bold text-navy-900 text-sm"><%= t.name %></div>
+                    <div class="text-[11px] text-slate-400 font-mono"><%= t.nip ? 'NIP. ' + t.nip : '-' %></div>
+                  </td>
+                  <td class="py-4 px-6">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold <%= t.role_type === 'kepala_sekolah' ? 'bg-amber-100 text-amber-800' : (t.role_type === 'guru' ? 'bg-navy-100 text-navy-800' : 'bg-slate-100 text-slate-700') %>">
+                      <%= t.position || t.role_type %>
+                    </span>
+                  </td>
+                  <td class="py-4 px-6 text-slate-600 font-semibold">
+                    <%= t.subject || '-' %>
+                  </td>
+                  <td class="py-4 px-6 text-slate-500 line-clamp-1">
+                    <%= t.education || '-' %>
+                  </td>
+                  <td class="py-4 px-6 text-center font-bold text-slate-400">
+                    <%= t.order_index %>
+                  </td>
+                  <td class="py-4 px-6 text-right space-x-1">
+                    <a href="/admin/teachers/<%= t.id %>/edit" class="p-2 rounded-xl text-slate-400 hover:text-navy-900 hover:bg-slate-100 inline-block transition" title="Edit">
+                      <i class="fa-solid fa-pen-to-square text-xs"></i>
+                    </a>
+                    <form action="/admin/teachers/<%= t.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Hapus data guru/staf ini?')">
+                      <button type="submit" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 inline-block transition" title="Hapus">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center py-12 text-slate-400 text-xs">
+                  Belum ada data guru yang dicatat.
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('../../partials/admin-footer') %>

@@ -1,0 +1,177 @@
+<%- include('../partials/admin-header') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <%- include('../partials/alerts') %>
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div>
+        <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Keamanan Akun</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola kata sandi dan verifikasi dua faktor (2FA) untuk akun Anda</p>
+      </div>
+      <div class="text-xs text-slate-500">
+        Login sebagai <strong class="text-navy-900"><%= account.username %></strong>
+        <span class="ml-1 px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 font-bold uppercase text-[10px]"><%= account.role %></span>
+      </div>
+    </div>
+
+    <!-- Status 2FA -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 <%= account.totp_enabled ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600' %>">
+            <i class="fa-solid <%= account.totp_enabled ? 'fa-shield-halved' : 'fa-shield' %>"></i>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold text-navy-900">Verifikasi Dua Faktor (2FA)</h2>
+            <p class="text-xs text-slate-500 mt-1 max-w-xl leading-relaxed">
+              <% if (account.totp_enabled) { %>
+                Sudah <strong class="text-emerald-600">aktif</strong>. Setiap login memerlukan kode 6 digit dari aplikasi authenticator.
+                Kode cadangan tersisa: <strong><%= backupCodesRemaining %></strong>.
+              <% } else { %>
+                Belum aktif. 2FA mencegah orang lain masuk meskipun kata sandi Anda bocor.
+                Disarankan untuk semua akun admin.
+              <% } %>
+            </p>
+          </div>
+        </div>
+        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider <%= account.totp_enabled ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' %>">
+          <%= account.totp_enabled ? 'Aktif' : 'Tidak Aktif' %>
+        </span>
+      </div>
+    </div>
+
+    <% if (newBackupCodes) { %>
+      <!-- Kode cadangan baru: hanya ditampilkan sekali -->
+      <div class="bg-navy-900 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
+        <h2 class="text-sm font-bold flex items-center gap-2">
+          <i class="fa-solid fa-key text-gold-400"></i> Simpan Kode Cadangan Anda
+        </h2>
+        <p class="text-[11px] text-slate-300 mt-1 leading-relaxed">
+          Kode ini hanya ditampilkan <strong class="text-gold-400">sekali</strong>. Simpan di tempat aman (bukan di folder web).
+          Setiap kode hanya bisa dipakai satu kali jika perangkat authenticator hilang.
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 font-mono text-sm">
+          <% newBackupCodes.forEach(function (code) { %>
+            <div class="px-3 py-2 rounded-xl bg-navy-800 border border-navy-700 text-center tracking-wider"><%= code %></div>
+          <% }); %>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-4">
+          <i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i>
+          Jika Anda menutup halaman ini, kode tidak dapat ditampilkan lagi. Anda bisa membuat kode baru kapan saja.
+        </p>
+      </div>
+    <% } %>
+
+    <% if (!account.totp_enabled) { %>
+      <!-- Aktivasi 2FA -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
+        <h2 class="text-sm font-bold text-navy-900 pb-3 border-b border-slate-100">Aktifkan 2FA</h2>
+
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <div class="space-y-3">
+            <p class="text-xs text-slate-600 leading-relaxed">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-navy-900 text-white text-[10px] font-bold mr-1">1</span>
+              Scan QR code berikut memakai aplikasi authenticator.
+            </p>
+            <% if (qrDataUrl) { %>
+              <div class="p-4 bg-white border-2 border-slate-200 rounded-2xl inline-block">
+                <img src="<%= qrDataUrl %>" alt="QR Code 2FA" class="w-48 h-48">
+              </div>
+            <% } else { %>
+              <div class="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-600">
+                QR code gagal dibuat. Gunakan kunci manual di samping.
+              </div>
+            <% } %>
+            <p class="text-[11px] text-slate-500">
+              Tidak bisa scan? Masukkan kunci ini secara manual:
+            </p>
+            <code class="block px-3 py-2 rounded-xl bg-slate-100 border border-slate-200 text-[11px] font-mono break-all text-navy-900"><%= setupSecret %></code>
+          </div>
+
+          <div class="space-y-4">
+            <p class="text-xs text-slate-600 leading-relaxed">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-navy-900 text-white text-[10px] font-bold mr-1">2</span>
+              Masukkan kode 6 digit yang tampil di aplikasi untuk mengonfirmasi.
+            </p>
+            <form action="/auth/security/enable" method="POST" class="space-y-3 text-xs">
+              <div>
+                <label for="code" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Kode Verifikasi</label>
+                <input type="text" id="code" name="code" required inputmode="numeric" autocomplete="one-time-code" maxlength="6"
+                       placeholder="123456"
+                       class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono tracking-[0.3em] text-center focus:outline-none focus:ring-2 focus:ring-navy-900">
+              </div>
+              <button type="submit" class="w-full py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs tracking-wider uppercase transition">
+                <i class="fa-solid fa-shield-halved mr-1.5"></i> Aktifkan 2FA
+              </button>
+            </form>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Pastikan jam perangkat Anda akurat. Kode berlaku sekitar 30 detik.
+            </p>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
+      <!-- Nonaktifkan 2FA -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h2 class="text-sm font-bold text-navy-900 pb-3 border-b border-slate-100">Nonaktifkan 2FA</h2>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Masukkan kata sandi dan kode verifikasi saat ini. Jika perangkat hilang, gunakan kode cadangan
+          atau minta operator server melakukan pemulihan darurat.
+        </p>
+        <form action="/auth/security/disable" method="POST" class="grid sm:grid-cols-3 gap-3 items-end text-xs">
+          <div>
+            <label for="disable_password" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Kata Sandi</label>
+            <input type="password" id="disable_password" name="password" required autocomplete="current-password"
+                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900">
+          </div>
+          <div>
+            <label for="disable_code" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Kode 2FA / Cadangan</label>
+            <input type="text" id="disable_code" name="code" required inputmode="numeric" autocomplete="one-time-code" maxlength="9"
+                   placeholder="123456"
+                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-navy-900">
+          </div>
+          <button type="submit" class="py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs uppercase tracking-wider transition">
+            Nonaktifkan
+          </button>
+        </form>
+      </div>
+
+      <!-- Buat ulang kode cadangan -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <h2 class="text-sm font-bold text-navy-900 pb-3 border-b border-slate-100">Buat Ulang Kode Cadangan</h2>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Gunakan jika kode cadangan lama hilang atau sudah habis. Konfirmasi dengan kata sandi Anda.
+          Kode lama akan otomatis tidak berlaku.
+        </p>
+        <form action="/auth/security/backup-codes" method="POST" class="flex flex-col sm:flex-row gap-3 sm:items-end text-xs">
+          <div class="flex-grow">
+            <label for="backup_password" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Kata Sandi</label>
+            <input type="password" id="backup_password" name="password" required autocomplete="current-password"
+                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900">
+          </div>
+          <button type="submit" class="py-2.5 px-5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs uppercase tracking-wider transition">
+            <i class="fa-solid fa-rotate mr-1.5"></i> Buat Kode Baru
+          </button>
+        </form>
+      </div>
+    <% } %>
+
+    <!-- Ganti kata sandi -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm flex items-start justify-between gap-4 flex-wrap">
+      <div>
+        <h2 class="text-sm font-bold text-navy-900">Kata Sandi</h2>
+        <p class="text-xs text-slate-500 mt-1">Ganti kata sandi secara berkala, terutama jika pernah dibagikan ke orang lain.</p>
+      </div>
+      <a href="/auth/change-password" class="px-5 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs uppercase tracking-wider transition">
+        <i class="fa-solid fa-key mr-1.5"></i> Ganti Kata Sandi
+      </a>
+    </div>
+
+  </main>
+</div>
+
+<%- include('../partials/admin-footer') %>

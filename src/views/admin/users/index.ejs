@@ -1,0 +1,126 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <%- include('../../partials/alerts') %>
+
+    <div>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-navy-900 text-gold-300 border border-gold-400/40 mb-2">
+        <i class="fa-solid fa-lock text-gold-400"></i> Khusus Super Admin
+      </span>
+      <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Manajemen Pengguna & Hak Akses</h1>
+      <p class="text-xs text-slate-500 mt-0.5">Kelola akun administrator, staf humas/editor, dan hak akses CMS sekolah</p>
+    </div>
+
+    <!-- Form Tambah User Baru -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+      <h3 class="font-bold text-navy-900 text-sm mb-4 pb-3 border-b border-slate-100 flex items-center gap-2">
+        <i class="fa-solid fa-user-plus text-gold-500"></i> Daftarkan Pengguna Baru
+      </h3>
+
+      <form action="/admin/users" method="POST" class="space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="name" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Nama Lengkap <span class="text-rose-500">*</span></label>
+            <input type="text" id="name" name="name" required placeholder="Contoh: Ni Luh Putu Ratna" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+          </div>
+          <div>
+            <label for="username" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Username Login <span class="text-rose-500">*</span></label>
+            <input type="text" id="username" name="username" required placeholder="Contoh: ratna_humas" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="email" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Email <span class="text-rose-500">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="ratna@sman12denpasar.sch.id" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label for="password" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Kata Sandi (Password) <span class="text-rose-500">*</span></label>
+            <input type="password" id="password" name="password" required placeholder="Minimal 6 karakter" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs">
+          </div>
+          <div>
+            <label for="role" class="block font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Peran (Role) Hak Akses</label>
+            <select id="role" name="role" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-900 text-xs font-semibold">
+              <option value="editor">Editor (Humas & Konten)</option>
+              <option value="superadmin">Super Admin (Akses Penuh)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs uppercase tracking-wider shadow transition">
+            <i class="fa-solid fa-plus mr-1"></i> Daftarkan Pengguna
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Table of Users -->
+    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-4 px-6 w-16 text-center">Avatar</th>
+              <th class="py-4 px-6">Nama & Username</th>
+              <th class="py-4 px-6">Email</th>
+              <th class="py-4 px-6">Peran (Role)</th>
+              <th class="py-4 px-6">Terdaftar Sejak</th>
+              <th class="py-4 px-6 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <% if (users && users.length > 0) { %>
+              <% users.forEach(u => { %>
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="py-4 px-6 text-center">
+                    <img src="<%= u.avatar || '/images/default-avatar.png' %>" alt="" class="w-10 h-10 rounded-full object-cover bg-slate-100 mx-auto ring-1 ring-slate-200">
+                  </td>
+                  <td class="py-4 px-6 font-bold text-navy-900">
+                    <div class="text-sm"><%= u.name %></div>
+                    <div class="text-[11px] text-slate-400 font-mono">@<%= u.username %></div>
+                  </td>
+                  <td class="py-4 px-6 text-slate-600 font-medium">
+                    <%= u.email %>
+                  </td>
+                  <td class="py-4 px-6">
+                    <% if (u.role === 'superadmin') { %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-navy-900 text-gold-300">
+                        Super Admin
+                      </span>
+                    <% } else { %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">
+                        Editor Humas
+                      </span>
+                    <% } %>
+                  </td>
+                  <td class="py-4 px-6 text-slate-500">
+                    <%= formatShortDate(u.created_at) %>
+                  </td>
+                  <td class="py-4 px-6 text-right">
+                    <% if (u.id !== user.id) { %>
+                      <form action="/admin/users/<%= u.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun pengguna ini?')">
+                        <button type="submit" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 inline-block transition" title="Hapus Akun">
+                          <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                      </form>
+                    <% } else { %>
+                      <span class="text-[10px] text-slate-400 italic">Akun Anda</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<%- include('../../partials/admin-footer') %>

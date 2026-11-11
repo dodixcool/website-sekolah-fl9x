@@ -1,0 +1,244 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<!-- Header Banner -->
+<section class="bg-navy-950 text-white py-14 sm:py-20 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="max-w-3xl">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-gold-500/20 text-gold-300 border border-gold-400/40 mb-3">
+        <i class="fa-solid fa-school text-gold-400"></i> Mengenal Lebih Dekat
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Profil SMA Negeri 12 Denpasar</h1>
+      <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+        Sejarah, visi & misi, struktur kepemimpinan, dan sarana prasarana penunjang pendidikan berwawasan global yang berakar pada keagungan budaya Bali.
+      </p>
+    </div>
+  </div>
+  <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+</section>
+
+<!-- Sub Navigation Tabs Sticky -->
+<div class="bg-white border-b border-slate-200 sticky top-20 z-40 shadow-sm overflow-x-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-6 text-sm font-semibold text-slate-600">
+    <a href="#sejarah" class="py-3.5 border-b-2 border-transparent hover:border-gold-500 hover:text-navy-900 transition whitespace-nowrap">Sejarah Singkat</a>
+    <a href="#visi-misi" class="py-3.5 border-b-2 border-transparent hover:border-gold-500 hover:text-navy-900 transition whitespace-nowrap">Visi & Misi</a>
+    <a href="#sambutan" class="py-3.5 border-b-2 border-transparent hover:border-gold-500 hover:text-navy-900 transition whitespace-nowrap">Sambutan Kepala Sekolah</a>
+    <a href="#struktur" class="py-3.5 border-b-2 border-transparent hover:border-gold-500 hover:text-navy-900 transition whitespace-nowrap">Struktur Organisasi</a>
+    <a href="#sarpras" class="py-3.5 border-b-2 border-transparent hover:border-gold-500 hover:text-navy-900 transition whitespace-nowrap">Sarana & Prasarana</a>
+    <a href="#akreditasi" class="py-3.5 border-b-2 border-transparent hover:border-gold-500 hover:text-navy-900 transition whitespace-nowrap">Akreditasi</a>
+  </div>
+</div>
+
+<main class="py-12 bg-slate-50 space-y-16">
+  
+  <!-- 1. SEJARAH -->
+  <section id="sejarah" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36">
+    <div class="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-200/80">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7 space-y-4">
+          <div class="inline-flex items-center gap-2 text-xs font-bold text-gold-600 uppercase tracking-wider bg-gold-50 px-3 py-1 rounded-full">
+            <i class="fa-solid fa-landmark"></i> Kilas Sejarah
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">
+            Perjalanan Pendirian SMA Negeri 12 Denpasar
+          </h2>
+          <div class="text-sm text-slate-600 leading-relaxed space-y-3 prose prose-slate">
+            <%- school.history %>
+          </div>
+        </div>
+        <div class="lg:col-span-5">
+          <div class="rounded-2xl overflow-hidden shadow-lg border-4 border-white">
+            <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80" alt="Gedung Sekolah SMAN 12 Denpasar" class="w-full h-80 object-cover">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. VISI & MISI -->
+  <section id="visi-misi" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      
+      <!-- Visi (5 Kolom) -->
+      <div class="md:col-span-5 bg-gradient-to-br from-navy-900 to-navy-950 text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-navy-800 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-xl mb-6 border border-gold-400/30">
+            <i class="fa-solid fa-bullseye"></i>
+          </div>
+          <span class="text-xs font-bold text-gold-400 tracking-wider uppercase">Visi Sekolah</span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-white mt-2 mb-4 leading-snug">
+            Arah dan Panduan Generasi Berkarakter
+          </h3>
+          <blockquote class="italic text-slate-200 text-sm sm:text-base leading-relaxed border-l-2 border-gold-400 pl-4">
+            "<%= school.vision %>"
+          </blockquote>
+        </div>
+        <div class="mt-8 pt-6 border-t border-navy-800 text-xs text-slate-400">
+          Landasan Nilai: <span class="text-gold-300 font-semibold">Tri Hita Karana & Profil Pelajar Pancasila</span>
+        </div>
+      </div>
+
+      <!-- Misi (7 Kolom) -->
+      <div class="md:col-span-7 bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-slate-200/80">
+        <div class="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center text-xl mb-6">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+        <span class="text-xs font-bold text-gold-600 tracking-wider uppercase">Misi Sekolah</span>
+        <h3 class="text-xl sm:text-2xl font-extrabold text-navy-900 mt-2 mb-6 tracking-tight">
+          Langkah Nyata Mewujudkan Prestasi
+        </h3>
+        
+        <div class="space-y-4 text-sm text-slate-600">
+          <% const missions = (school.mission || '').split('\n').filter(m => m.trim().length > 0); %>
+          <% missions.forEach(m => { %>
+            <div class="flex items-start gap-3.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <i class="fa-solid fa-circle-check text-gold-500 text-base mt-0.5 flex-shrink-0"></i>
+              <span class="leading-relaxed"><%= m.replace(/^[0-9]+\.\s*/, '') %></span>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. SAMBUTAN KEPALA SEKOLAH LENGKAP -->
+  <section id="sambutan" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36">
+    <div class="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-200/80">
+      <div class="flex flex-col md:flex-row gap-8 items-start">
+        <div class="w-full md:w-64 flex-shrink-0 text-center">
+          <img src="<%= school.principal_photo || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=80' %>" alt="<%= school.principal_name %>" class="w-48 h-56 mx-auto object-cover rounded-2xl shadow-md ring-4 ring-gold-400/40">
+          <h4 class="font-bold text-navy-900 text-sm mt-3"><%= school.principal_name %></h4>
+          <p class="text-xs text-slate-500">Kepala Sekolah</p>
+          <p class="text-[11px] text-slate-400">NIP. <%= school.principal_nip %></p>
+        </div>
+        <div class="flex-grow space-y-4">
+          <span class="text-xs font-bold text-gold-600 uppercase tracking-wider bg-gold-50 px-3 py-1 rounded-full">
+            Sambutan Resmi
+          </span>
+          <h3 class="text-2xl font-extrabold text-navy-900 tracking-tight">
+            Pesan Kepala Sekolah untuk Seluruh Civitas Akademika
+          </h3>
+          <div class="text-sm text-slate-600 leading-relaxed space-y-3 prose prose-slate max-w-none">
+            <%- school.principal_speech %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. STRUKTUR ORGANISASI -->
+  <section id="struktur" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <span class="text-xs font-bold text-gold-600 tracking-wider uppercase bg-gold-100 px-3 py-1 rounded-full">
+        Manajemen
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-navy-900 mt-2 tracking-tight">
+        Struktur Organisasi Sekolah
+      </h2>
+      <p class="text-xs text-slate-500 mt-1">Bagan kepemimpinan terintegrasi SMA Negeri 12 Denpasar</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Card Kepala Sekolah -->
+      <div class="lg:col-span-4 max-w-md mx-auto w-full bg-navy-900 text-white rounded-2xl p-6 text-center shadow-lg border border-gold-400/40">
+        <div class="w-16 h-16 rounded-full mx-auto overflow-hidden ring-2 ring-gold-400 mb-3">
+          <img src="<%= school.principal_photo || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=80' %>" class="w-full h-full object-cover">
+        </div>
+        <h4 class="font-bold text-base text-gold-300"><%= school.principal_name %></h4>
+        <p class="text-xs text-slate-300">Kepala SMA Negeri 12 Denpasar</p>
+      </div>
+
+      <!-- 4 Wakasek -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 text-center shadow-sm hover:border-gold-400 transition">
+        <div class="w-12 h-12 rounded-xl bg-navy-50 text-navy-800 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
+          <i class="fa-solid fa-book"></i>
+        </div>
+        <h5 class="font-bold text-navy-900 text-sm">Wakasek Kurikulum</h5>
+        <p class="text-xs text-slate-500 mt-1">Ni Made Ayu Astuti, S.Pd., M.Hum.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 text-center shadow-sm hover:border-gold-400 transition">
+        <div class="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <h5 class="font-bold text-navy-900 text-sm">Wakasek Kesiswaan</h5>
+        <p class="text-xs text-slate-500 mt-1">I Gusti Ngurah Bagus Dananjaya, S.Pd.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 text-center shadow-sm hover:border-gold-400 transition">
+        <div class="w-12 h-12 rounded-xl bg-navy-50 text-navy-800 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
+          <i class="fa-solid fa-building-shield"></i>
+        </div>
+        <h5 class="font-bold text-navy-900 text-sm">Wakasek Sarpras</h5>
+        <p class="text-xs text-slate-500 mt-1">Dra. Ni Ketut Wardani, M.Si.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 text-center shadow-sm hover:border-gold-400 transition">
+        <div class="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
+          <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <h5 class="font-bold text-navy-900 text-sm">Wakasek Humas</h5>
+        <p class="text-xs text-slate-500 mt-1">I Kadek Sudarma, S.Kom., M.Cs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SARANA & PRASARANA -->
+  <section id="sarpras" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <span class="text-xs font-bold text-gold-600 tracking-wider uppercase bg-gold-100 px-3 py-1 rounded-full">
+        Fasilitas
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-navy-900 mt-2 tracking-tight">
+        Sarana & Prasarana Modern
+      </h2>
+      <p class="text-xs text-slate-500 mt-1">Mendukung ekosistem belajar yang nyaman, interaktif, dan berstandar nasional</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+        <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80" alt="Ruang Kelas Modern" class="w-full h-44 object-cover">
+        <div class="p-5">
+          <h4 class="font-bold text-navy-900 text-sm mb-1">Ruang Kelas Ber-AC & Multimedia</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Dilengkapi smart projector, koneksi WiFi berkecepatan tinggi, dan pencahayaan ergonomis.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+        <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600&auto=format&fit=crop&q=80" alt="Laboratorium Sains Terpadu" class="w-full h-44 object-cover">
+        <div class="p-5">
+          <h4 class="font-bold text-navy-900 text-sm mb-1">Laboratorium Sains & Robotika</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Lab Fisika, Kimia, Biologi dan Lab Komputer dengan perangkat IoT untuk riset siswa.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+        <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&auto=format&fit=crop&q=80" alt="Perpustakaan Digital" class="w-full h-44 object-cover">
+        <div class="p-5">
+          <h4 class="font-bold text-navy-900 text-sm mb-1">Perpustakaan Digital Widya Graha</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Ribuan buku cetak, e-book perpustakaan digital nasional, dan ruang diskusi literasi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. AKREDITASI -->
+  <section id="akreditasi" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-36">
+    <div class="bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 text-white rounded-3xl p-8 sm:p-12 shadow-xl border border-gold-400/40 text-center">
+      <div class="w-16 h-16 rounded-2xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-3xl mx-auto mb-4 border border-gold-400/40">
+        <i class="fa-solid fa-certificate"></i>
+      </div>
+      <span class="text-xs font-bold text-gold-300 uppercase tracking-widest">Sertifikasi & Kualitas</span>
+      <h3 class="text-2xl sm:text-4xl font-extrabold mt-2 mb-3">
+        <%= school.accreditation || 'Terakreditasi A (Unggul) - Nilai 96 oleh BAN-S/M' %>
+      </h3>
+      <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        Penilaian komprehensif mencakup standar mutu lulusan, proses pembelajaran, sarana prasarana, kualifikasi pendidik, serta tata kelola manajemen sekolah yang transparan dan akuntabel.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<%- include('../partials/footer') %>

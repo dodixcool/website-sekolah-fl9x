@@ -1,0 +1,68 @@
+<%- include('../../partials/admin-header') %>
+<%- include('../../partials/admin-sidebar') %>
+
+<div class="flex-grow flex flex-col h-screen overflow-hidden">
+  <%- include('../../partials/admin-navbar') %>
+
+  <main class="flex-grow overflow-y-auto p-6 sm:p-8 bg-slate-100 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-extrabold text-navy-900 tracking-tight">Detail Pesan Masuk</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Diterima pada <%= formatDate(message.created_at) %></p>
+      </div>
+      <a href="/admin/messages" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold hover:bg-slate-50 transition">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Kotak Masuk
+      </a>
+    </div>
+
+    <div class="max-w-3xl bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-sm space-y-6">
+      
+      <!-- Pengirim Header -->
+      <div class="flex items-center justify-between pb-6 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-navy-50 text-navy-900 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-navy-900 text-sm"><%= message.name %></h3>
+            <p class="text-xs text-slate-500"><%= message.email %> &bull; <%= message.phone || 'Tanpa No HP' %></p>
+          </div>
+        </div>
+        <span class="text-xs text-slate-400 font-mono"><%= formatShortDate(message.created_at) %></span>
+      </div>
+
+      <!-- Isi Subjek & Pesan -->
+      <div class="space-y-3">
+        <span class="text-xs font-bold text-gold-600 uppercase tracking-wider bg-gold-50 px-2.5 py-1 rounded-md">Subjek Pesan</span>
+        <h2 class="text-lg font-bold text-navy-900"><%= message.subject %></h2>
+        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-700 text-xs leading-relaxed whitespace-pre-line">
+          <%= message.message %>
+        </div>
+      </div>
+
+      <!-- Tombol Balas Cepat -->
+      <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <a href="mailto:<%= message.email %>?subject=Re: <%= encodeURIComponent(message.subject) %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs transition">
+            <i class="fa-solid fa-reply"></i> Balas Lewat Email
+          </a>
+          <% if (message.phone) { %>
+            <a href="https://wa.me/<%= message.phone.replace(/[^0-9]/g, '') %>?text=Halo%20<%= encodeURIComponent(message.name) %>,%20kami%20dari%20SMA%20Negeri%2012%20Denpasar%20menanggapi%20pesan%20Anda" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition">
+              <i class="fa-brands fa-whatsapp"></i> Balas Lewat WhatsApp
+            </a>
+          <% } %>
+        </div>
+
+        <form action="/admin/messages/<%= message.id %>/delete" method="POST" onsubmit="return confirm('Hapus pesan ini secara permanen?')">
+          <button type="submit" class="px-4 py-2.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold text-xs transition">
+            <i class="fa-solid fa-trash-can mr-1"></i> Hapus Pesan
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<%- include('../../partials/admin-footer') %>
